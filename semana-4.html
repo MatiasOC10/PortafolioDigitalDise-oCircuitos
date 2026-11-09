@@ -7,10 +7,10 @@
 <meta name="description" content="Cuaderno de resumen de Diseño de Circuitos (UNL, Computación): Unidad 1, semanas 1 a 4, con ejercicios resueltos.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&family=Literata:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
 </head>
-<body>
+<body class="w4">
 <div class="layout">
 <aside class="side">
 <a class="brand" href="index.html">Cuaderno de Diseño de Circuitos</a>
@@ -19,10 +19,9 @@
 </aside>
 <div class="main">
 <main class="sheet">
-
-<h1>Semana 4 · Circuitos aritméticos</h1>
+<header class="banner"><span class="num" aria-hidden="true">04</span><h1>Semana 4 · Circuitos aritméticos</h1>
 <p class="meta">Unidad 1 · R1: diseña circuitos combinacionales básicos · Prepara la APE 04 (martes 27 de octubre, 07:30–09:30, laboratorio).</p>
-<p class="lead">¿Cómo suma un circuito? Diseñé con el procedimiento clásico un sumador de 4 bits, lo usé también para restar y estimé cuánto tarda en dar el resultado. Es el corazón de la ALU de un procesador.</p>
+<p class="lead">¿Cómo suma un circuito? Diseñé con el procedimiento clásico un sumador de 4 bits, lo usé también para restar y estimé cuánto tarda en dar el resultado. Es el corazón de la ALU de un procesador.</p></header><div class="content">
 
 <h2>1. Sumar un solo bit: solo 4 casos</h2>
 <div class="wide"><table class="tt"><tr><th>Operación</th><th>Resultado</th><th>Escribo (S)</th><th>Me llevo (C)</th></tr><tr><td>0 + 0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>0 + 1</td><td>1</td><td class="one">1</td><td>0</td></tr><tr><td>1 + 0</td><td>1</td><td class="one">1</td><td>0</td></tr><tr><td>1 + 1</td><td>2 = 10₂</td><td>0</td><td class="one">1</td></tr></table></div>
@@ -53,7 +52,7 @@
 <p>Los 1 están alternados y ningún 1 tiene vecino, así que no hay grupos. Eso es una XOR: <code class="e">S = A ⊕ B ⊕ Cin</code>.</p>
 <div class="wide"><table class="kmap"><tr><th class="c">A \ BC</th><th>00</th><th>01</th><th>11</th><th>10</th></tr><tr><th>0</th><td class="v0"><span class="i">0</span>0</td><td class="v1"><span class="i">1</span>1</td><td class="v0"><span class="i">3</span>0</td><td class="v1"><span class="i">2</span>1</td></tr><tr><th>1</th><td class="v1"><span class="i">4</span>1</td><td class="v0"><span class="i">5</span>0</td><td class="v1"><span class="i">7</span>1</td><td class="v0"><span class="i">6</span>0</td></tr></table></div><p class="meta">Filas A, columnas B·Cin en código Gray.</p>
 <h3>K-map de Cout: tres grupos de dos</h3>
-<div class="wide"><table class="kmap"><tr><th class="c">A \ BC</th><th>00</th><th>01</th><th>11</th><th>10</th></tr><tr><th>0</th><td class="v0"><span class="i">0</span>0</td><td class="v0"><span class="i">1</span>0</td><td class="v1" style="box-shadow:inset 0 0 0 3px #0E8A52; background:color-mix(in srgb, #0E8A52 16%, transparent)"><span class="i">3</span>1</td><td class="v0"><span class="i">2</span>0</td></tr><tr><th>1</th><td class="v0"><span class="i">4</span>0</td><td class="v1" style="box-shadow:inset 0 0 0 3px #C27C0E; background:color-mix(in srgb, #C27C0E 16%, transparent)"><span class="i">5</span>1</td><td class="v1" style="box-shadow:inset 0 0 0 3px #0E8A52, inset 0 0 0 6px #C27C0E, inset 0 0 0 9px #2F6DB5; background:color-mix(in srgb, #0E8A52 16%, transparent)"><span class="i">7</span>1</td><td class="v1" style="box-shadow:inset 0 0 0 3px #2F6DB5; background:color-mix(in srgb, #2F6DB5 16%, transparent)"><span class="i">6</span>1</td></tr></table></div><ul class="leg"><li><i style="background:#0E8A52"></i><code class="e">B·Cin</code>: celdas m3, m7</li><li><i style="background:#C27C0E"></i><code class="e">A·Cin</code>: celdas m5, m7</li><li><i style="background:#2F6DB5"></i><code class="e">A·B</code>: celdas m6, m7</li></ul>
+<div class="wide"><table class="kmap"><tr><th class="c">A \ BC</th><th>00</th><th>01</th><th>11</th><th>10</th></tr><tr><th>0</th><td class="v0"><span class="i">0</span>0</td><td class="v0"><span class="i">1</span>0</td><td class="v1" style="box-shadow:inset 0 0 0 3px #34D399; background:color-mix(in srgb, #34D399 24%, transparent)"><span class="i">3</span>1</td><td class="v0"><span class="i">2</span>0</td></tr><tr><th>1</th><td class="v0"><span class="i">4</span>0</td><td class="v1" style="box-shadow:inset 0 0 0 3px #FBBF24; background:color-mix(in srgb, #FBBF24 24%, transparent)"><span class="i">5</span>1</td><td class="v1" style="box-shadow:inset 0 0 0 3px #34D399, inset 0 0 0 6px #FBBF24, inset 0 0 0 9px #60A5FA; background:color-mix(in srgb, #34D399 24%, transparent)"><span class="i">7</span>1</td><td class="v1" style="box-shadow:inset 0 0 0 3px #60A5FA; background:color-mix(in srgb, #60A5FA 24%, transparent)"><span class="i">6</span>1</td></tr></table></div><ul class="leg"><li><i style="background:#34D399"></i><code class="e">B·Cin</code>: celdas m3, m7</li><li><i style="background:#FBBF24"></i><code class="e">A·Cin</code>: celdas m5, m7</li><li><i style="background:#60A5FA"></i><code class="e">A·B</code>: celdas m6, m7</li></ul>
 <p>La columna 11 da <code class="e">B·Cin</code>, la fila A = 1 con columnas 01 y 11 da <code class="e">A·Cin</code>, y la fila A = 1 con columnas 11 y 10 da <code class="e">A·B</code>. Entonces <strong><code class="e">Cout = AB + A·Cin + B·Cin</code></strong>, que es «al menos dos unos».</p>
 <p>No hay que memorizar las fórmulas: hago la tabla contando los unos, agrupo en el K-map (si sale ajedrez es XOR) y leo la expresión con su lectura en palabras. Lo que sí recuerdo es que S es impar de unos y Cout es al menos dos unos.</p>
 
@@ -132,8 +131,7 @@ inv = 1100
 <tr><td class="l">Resta</td><td class="l">M = 1: la XOR invierte B y Cin = 1</td></tr>
 <tr><td class="l">Overflow</td><td class="l">V = C3 ⊕ C4, no Cout</td></tr></table></div>
 <p>Para la próxima clase: lectura de circuitos aritméticos combinacionales (texto base), Cuestionario de autoevaluación 04 en el EVA y el diseño previo de la APE 04 (tabla y ecuaciones del sumador completo en papel). En la práctica repito la misma suma en Logisim con 4 sumadores y con el integrado 7483.</p>
-
-<div class="pager"><a href="semana-3.html">← Semana 3</a><span></span></div>
+<div class="pager"><a href="semana-3.html">← Semana 3</a><span></span></div></div>
 </main>
 <footer class="pie">Matias Joel Ortega Correa · Universidad Nacional de Loja · Carrera de Computación · 2.º ciclo A · Docente: Ing. Luis Darío Sinche Cueva, Mg.</footer>
 </div>
