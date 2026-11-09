@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Semana 4 · Cuaderno de Diseño de Circuitos</title>
+<meta name="description" content="Cuaderno de resumen de Diseño de Circuitos (UNL, Computación): Unidad 1, semanas 1 a 4, con ejercicios resueltos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&family=Literata:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="layout">
+<aside class="side">
+<a class="brand" href="index.html">Cuaderno de Diseño de Circuitos</a>
+<p class="who">Matias Joel Ortega Correa<br>Computación · UNL</p>
+<nav aria-label="Semanas"><a href="index.html">Inicio<small>Portada e índice</small></a><a href="semana-1.html">Semana 1<small>Números, códigos y compuertas</small></a><a href="semana-2.html">Semana 2<small>Álgebra de Boole y formas canónicas</small></a><a href="semana-3.html">Semana 3<small>Karnaugh, indiferentes y NAND/NOR</small></a><a href="semana-4.html" aria-current="page">Semana 4<small>Circuitos aritméticos</small></a></nav>
+</aside>
+<div class="main">
+<main class="sheet">
+
+<h1>Semana 4 · Circuitos aritméticos</h1>
+<p class="meta">Unidad 1 · R1: diseña circuitos combinacionales básicos · Prepara la APE 04 (martes 27 de octubre, 07:30–09:30, laboratorio).</p>
+<p class="lead">¿Cómo suma un circuito? Diseñé con el procedimiento clásico un sumador de 4 bits, lo usé también para restar y estimé cuánto tarda en dar el resultado. Es el corazón de la ALU de un procesador.</p>
+
+<h2>1. Sumar un solo bit: solo 4 casos</h2>
+<div class="wide"><table class="tt"><tr><th>Operación</th><th>Resultado</th><th>Escribo (S)</th><th>Me llevo (C)</th></tr><tr><td>0 + 0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>0 + 1</td><td>1</td><td class="one">1</td><td>0</td></tr><tr><td>1 + 0</td><td>1</td><td class="one">1</td><td>0</td></tr><tr><td>1 + 1</td><td>2 = 10₂</td><td>0</td><td class="one">1</td></tr></table></div>
+<p>S es la suma (el dígito que se escribe) y C es el carry o acarreo (el que «me llevo»). Igual que en decimal: 7 + 5 = 12, escribo 2 y llevo 1.</p>
+<h3>Ejemplo: 0110 + 0111, columna por columna</h3>
+<pre><code>acarreo   1 1 0 0
+          0 1 1 0   ( 6)
+        + 0 1 1 1   ( 7)
+          ---------
+          1 1 0 1   (13)</code></pre>
+<div class="wide"><table class="tt"><tr><th>Columna</th><th>Suma</th><th>Escribo</th><th>Llevo</th></tr><tr><td>0</td><td>0+1 = 1</td><td>1</td><td>0</td></tr><tr><td>1</td><td>1+1 = 2</td><td>0</td><td>1</td></tr><tr><td>2</td><td>1+1+1 = 3</td><td>1</td><td>1</td></tr><tr><td>3</td><td>0+0+1 = 1</td><td>1</td><td>0</td></tr></table></div>
+<p>El acarreo puede aparecer en cualquier lado, y un acarreo provoca otro: se encadenan. Por ejemplo, 0111 + 0001 = 1000 (7 + 1 = 8) produce acarreo en las columnas 0, 1 y 2.</p>
+
+<h2>2. Dos tipos de columna, dos circuitos</h2>
+<ul>
+<li><strong>Columna 0:</strong> suma 2 bits (A y B), porque a su derecha no hay nada. Se resuelve con un <strong>semisumador</strong>.</li>
+<li><strong>Columnas 1, 2, 3…:</strong> suman 3 bits (A, B y el acarreo que llega, Cin). Se resuelven con un <strong>sumador completo</strong>.</li>
+</ul>
+<h3>Semisumador</h3>
+<p>Su tabla de verdad es:</p>
+<div class="wide"><table class="tt"><tr><th>A</th><th>B</th><th>C</th><th>S</th></tr><tr><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>0</td><td class="one">1</td></tr><tr><td>1</td><td>0</td><td>0</td><td class="one">1</td></tr><tr><td>1</td><td>1</td><td class="one">1</td><td>0</td></tr></table></div>
+<p>S vale 1 cuando A y B son distintos (XOR) y C vale 1 solo cuando A y B son ambos 1 (AND). Entonces <code class="e">S = A ⊕ B</code> y <code class="e">C = A · B</code>: dos compuertas conocidas. Se llama «semi» porque no puede recibir acarreo, así que solo sirve para la columna 0.</p>
+<h3>Sumador completo: el truco de contar unos</h3>
+<p>Cuento los unos de la fila y escribo ese número en binario: los dos bits son Cout y S.</p>
+<div class="wide"><table class="tt"><tr><th>A</th><th>B</th><th>Cin</th><th># de 1</th><th>Binario</th><th>Cout</th><th>S</th></tr><tr><td>0</td><td>0</td><td>0</td><td>0</td><td>00</td><td>0</td><td>0</td></tr><tr><td>0</td><td>0</td><td>1</td><td>1</td><td>01</td><td>0</td><td class="one">1</td></tr><tr><td>0</td><td>1</td><td>0</td><td>1</td><td>01</td><td>0</td><td class="one">1</td></tr><tr><td>0</td><td>1</td><td>1</td><td>2</td><td>10</td><td class="one">1</td><td>0</td></tr><tr><td>1</td><td>0</td><td>0</td><td>1</td><td>01</td><td>0</td><td class="one">1</td></tr><tr><td>1</td><td>0</td><td>1</td><td>2</td><td>10</td><td class="one">1</td><td>0</td></tr><tr><td>1</td><td>1</td><td>0</td><td>2</td><td>10</td><td class="one">1</td><td>0</td></tr><tr><td>1</td><td>1</td><td>1</td><td>3</td><td>11</td><td class="one">1</td><td class="one">1</td></tr></table></div>
+<p>En palabras: <strong>S = 1 cuando hay un número impar de unos</strong> (1 o 3), y <strong>Cout = 1 cuando hay al menos dos unos</strong> (la mayoría).</p>
+<h3>K-map de S: el tablero de ajedrez</h3>
+<p>Los 1 están alternados y ningún 1 tiene vecino, así que no hay grupos. Eso es una XOR: <code class="e">S = A ⊕ B ⊕ Cin</code>.</p>
+<div class="wide"><table class="kmap"><tr><th class="c">A \ BC</th><th>00</th><th>01</th><th>11</th><th>10</th></tr><tr><th>0</th><td class="v0"><span class="i">0</span>0</td><td class="v1"><span class="i">1</span>1</td><td class="v0"><span class="i">3</span>0</td><td class="v1"><span class="i">2</span>1</td></tr><tr><th>1</th><td class="v1"><span class="i">4</span>1</td><td class="v0"><span class="i">5</span>0</td><td class="v1"><span class="i">7</span>1</td><td class="v0"><span class="i">6</span>0</td></tr></table></div><p class="meta">Filas A, columnas B·Cin en código Gray.</p>
+<h3>K-map de Cout: tres grupos de dos</h3>
+<div class="wide"><table class="kmap"><tr><th class="c">A \ BC</th><th>00</th><th>01</th><th>11</th><th>10</th></tr><tr><th>0</th><td class="v0"><span class="i">0</span>0</td><td class="v0"><span class="i">1</span>0</td><td class="v1" style="box-shadow:inset 0 0 0 3px #0E8A52; background:color-mix(in srgb, #0E8A52 16%, transparent)"><span class="i">3</span>1</td><td class="v0"><span class="i">2</span>0</td></tr><tr><th>1</th><td class="v0"><span class="i">4</span>0</td><td class="v1" style="box-shadow:inset 0 0 0 3px #C27C0E; background:color-mix(in srgb, #C27C0E 16%, transparent)"><span class="i">5</span>1</td><td class="v1" style="box-shadow:inset 0 0 0 3px #0E8A52, inset 0 0 0 6px #C27C0E, inset 0 0 0 9px #2F6DB5; background:color-mix(in srgb, #0E8A52 16%, transparent)"><span class="i">7</span>1</td><td class="v1" style="box-shadow:inset 0 0 0 3px #2F6DB5; background:color-mix(in srgb, #2F6DB5 16%, transparent)"><span class="i">6</span>1</td></tr></table></div><ul class="leg"><li><i style="background:#0E8A52"></i><code class="e">B·Cin</code>: celdas m3, m7</li><li><i style="background:#C27C0E"></i><code class="e">A·Cin</code>: celdas m5, m7</li><li><i style="background:#2F6DB5"></i><code class="e">A·B</code>: celdas m6, m7</li></ul>
+<p>La columna 11 da <code class="e">B·Cin</code>, la fila A = 1 con columnas 01 y 11 da <code class="e">A·Cin</code>, y la fila A = 1 con columnas 11 y 10 da <code class="e">A·B</code>. Entonces <strong><code class="e">Cout = AB + A·Cin + B·Cin</code></strong>, que es «al menos dos unos».</p>
+<p>No hay que memorizar las fórmulas: hago la tabla contando los unos, agrupo en el K-map (si sale ajedrez es XOR) y leo la expresión con su lectura en palabras. Lo que sí recuerdo es que S es impar de unos y Cout es al menos dos unos.</p>
+
+<h2>3. Sumador de 4 bits y retardo ripple</h2>
+<p>Encadeno cuatro sumadores con una regla única: el Cout de un sumador entra al Cin del siguiente. El de la etapa 0 recibe Cin = 0 (o puede ser un semisumador), y el Cout de la etapa 3 es el acarreo final.</p>
+<div class="flow" role="img" aria-label="Cuatro sumadores en cadena">
+<span>Sumador 0 (A0, B0 → S0)</span><b>Cout → Cin</b><span>Sumador 1 (A1, B1 → S1)</span><b>Cout → Cin</b><span>Sumador 2 (A2, B2 → S2)</span><b>Cout → Cin</b><span>Sumador 3 (A3, B3 → S3)</span>
+</div>
+<p>Se llama <em>ripple</em> porque el acarreo avanza como una ola: cada sumador espera el acarreo del anterior y el resultado se completa de derecha a izquierda.</p>
+<h3>Estimación del retardo</h3>
+<p>Supongo que cada compuerta tarda unos 10 ns y que el acarreo cruza unas 2 compuertas por etapa, así que <code class="e">retardo ≈ 2 · n · 10 ns</code>.</p>
+<div class="wide"><table class="tt"><tr><th>Bits</th><th>Compuertas ≈</th><th>Tiempo</th></tr><tr><td>4</td><td>8</td><td>80 ns</td></tr><tr><td>16</td><td>32</td><td>320 ns</td></tr><tr><td>32</td><td>64</td><td>640 ns</td></tr></table></div><p>Más bits significa más lento.</p>
+<h2>4. Restar es sumar el negativo</h2>
+<p><code class="e">A − B = A + (−B)</code>, y −B se obtiene invirtiendo los bits de B y sumando 1.</p>
+<pre><code>B   = 0011  (3)
+inv = 1100
++1  = 1101  (−3)
+
+  0110  (6)
++ 1101  (−3)
+-------
+1 0011  → 3  (el 1 que sobra a la izquierda se descarta)</code></pre>
+<h3>XOR: un inversor controlado</h3>
+<p>Con una señal M, la XOR deja pasar B o lo invierte:</p>
+<div class="wide"><table class="tt"><tr><th>M</th><th>B</th><th>B ⊕ M</th></tr><tr><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td class="one">1</td></tr><tr><td>1</td><td>0</td><td class="one">1</td></tr><tr><td>1</td><td>1</td><td>0</td></tr></table></div>
+<p>Si M = 0, B pasa igual y el circuito <strong>suma</strong>. Si M = 1, B se invierte y el circuito <strong>resta</strong>. Además conecto M al Cin del sumador 0, que aporta el +1. Así un solo circuito suma o resta según M.</p>
+
+<h2>5. Overflow: cuando el resultado no cabe</h2>
+<pre><code>  0101  (+5)
++ 0100  (+4)
+-------
+  1001  → −7 ✗   (con 4 bits y signo el rango es de −8 a +7)</code></pre>
+<p>Hay overflow cuando el acarreo que entra a la última etapa es distinto del que sale: <code class="e">V = C3 ⊕ C4</code>. Que Cout = 1 <strong>no</strong> significa error. En este ejemplo, el acarreo hacia la etapa 3 es C3 = 1 y el acarreo de salida es C4 = 0, así que V = 1 y hay overflow.</p>
+
+<h2>6. Comparador de magnitud</h2>
+<ul>
+<li><strong>¿A = B?</strong> Una XNOR por cada bit (vale 1 si son iguales) y una AND con todas.</li>
+<li><strong>¿A &gt; B?</strong> Se mira desde la izquierda: el primer bit en que difieren decide.</li>
+</ul>
+<p>Para 2 bits: A &gt; B si A gana en el bit alto, o si empatan ahí y A gana en el bajo. Es decir <code class="e">A>B = A1·B1' + (A1 ⊙ B1)·A0·B0'</code>. El integrado comercial es el 7485.</p>
+
+<h2>7. De aquí sale la ALU</h2>
+<p>Una ALU junta un sumador/restador, un comparador y las operaciones AND / OR / XOR, y un multiplexor (Semana 5) elige el resultado de la instrucción.</p>
+
+<h2>8. Demostración: 0101 + 0011 en el circuito</h2>
+<div class="wide"><table class="tt"><tr><th>Etapa</th><th>A</th><th>B</th><th>Cin</th><th># de 1</th><th>S</th><th>Cout</th></tr><tr><td>0</td><td>1</td><td>1</td><td>0</td><td>2</td><td>0</td><td class="one">1</td></tr><tr><td>1</td><td>0</td><td>1</td><td>1</td><td>2</td><td>0</td><td class="one">1</td></tr><tr><td>2</td><td>1</td><td>0</td><td>1</td><td>2</td><td>0</td><td class="one">1</td></tr><tr><td>3</td><td>0</td><td>0</td><td>1</td><td>1</td><td class="one">1</td><td>0</td></tr></table></div>
+<p>El resultado es 1000 = 8. Sin signo es correcto (5 + 3 = 8). Con signo hay overflow: el acarreo que entra a la etapa 3 es 1 y el que sale es 0, así que V = 1; 8 no cabe en el rango −8 a +7.</p>
+<div class="tool" id="adder">
+<h3>Calculadora de sumador/restador de 4 bits</h3>
+<p>Escribe A y B (0 a 15) y elige M. Muestra cada etapa del ripple igual que las tablas de arriba.</p>
+<label>A <input type="number" id="ad-a" min="0" max="15" value="5"></label>
+<label>B <input type="number" id="ad-b" min="0" max="15" value="3"></label>
+<label>M <select id="ad-m"><option value="0">0 (suma)</option><option value="1">1 (resta)</option></select></label>
+<div id="ad-out" aria-live="polite"></div>
+</div>
+<div class="ej"><p class="src">25 minutos, en parejas</p><h3>Taller dirigido: 4 ejercicios</h3>
+<p><strong>1. Sumar 1011 + 0110 escribiendo el acarreo de cada columna.</strong></p>
+<pre><code>acarreo  1 1 1 0
+           1 0 1 1   (11)
+         + 0 1 1 0   ( 6)
+         ---------
+         1 0 0 0 1   (17)</code></pre>
+<div class="wide"><table class="tt"><tr><th>Columna</th><th>A</th><th>B</th><th>Cin</th><th># de 1</th><th>S</th><th>Cout</th></tr><tr><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td class="one">1</td><td>0</td></tr><tr><td>1</td><td>1</td><td>1</td><td>0</td><td>2</td><td>0</td><td class="one">1</td></tr><tr><td>2</td><td>0</td><td>1</td><td>1</td><td>2</td><td>0</td><td class="one">1</td></tr><tr><td>3</td><td>1</td><td>0</td><td>1</td><td>2</td><td>0</td><td class="one">1</td></tr></table></div>
+<p>Con signo (4 bits): 1011 = −5 y 0110 = +6, y la suma de signos distintos no puede desbordar. El acarreo hacia la etapa 3 es C3 = 1 y el de salida es C4 = 1, así que V = 1 ⊕ 1 = 0 y no hay overflow, y el 0001 que queda es +1 (−5 + 6 = 1). Sin signo, el 1 de Cout indica que 17 no cabe en 4 bits.</p>
+<p><strong>2. Restar 0110 − 0011 con el sumador (M = 1).</strong> Invierto B con la XOR: 0011 ⊕ 1111 = 1100, y Cin = 1.</p>
+<div class="wide"><table class="tt"><tr><th>Etapa</th><th>A</th><th>B ⊕ M</th><th>Cin</th><th># de 1</th><th>S</th><th>Cout</th></tr><tr><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td class="one">1</td><td>0</td></tr><tr><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td><td class="one">1</td><td>0</td></tr><tr><td>2</td><td>1</td><td>1</td><td>0</td><td>2</td><td>0</td><td class="one">1</td></tr><tr><td>3</td><td>0</td><td>1</td><td>1</td><td>2</td><td>0</td><td class="one">1</td></tr></table></div>
+<p>Resultado: 0011 = 3, y el acarreo que sobra se descarta. Además C3 = 1 y C4 = 1, así que V = 0 y no hay overflow. Coincide con 6 − 3 = 3.</p>
+<p><strong>3. Estimar el retardo de un sumador de 16 bits.</strong> Retardo ≈ 2 · n · 10 ns = 2 · 16 · 10 ns = <strong>320 ns</strong> (32 compuertas en el camino del acarreo).</p>
+<p><strong>4. Comparar A = 10 y B = 01.</strong> Los números están en binario de 2 bits: A1A0 = 10 y B1B0 = 01. ¿A &gt; B? En el bit alto, A1 = 1 y B1 = 0, así que A gana ahí y <strong>A &gt; B</strong>. ¿A = B? XNOR del bit alto = (1 ⊙ 0) = 0, así que <strong>A ≠ B</strong>. En decimal: A = 2 y B = 1.</p></div>
+<h2>Resumen de la semana</h2>
+<div class="wide"><table><tr><th class="l">Tema</th><th class="l">Idea</th></tr>
+<tr><td class="l">S y C</td><td class="l">S se escribe, C «me lo llevo»</td></tr>
+<tr><td class="l">Semisumador</td><td class="l">S = XOR, C = AND; solo sirve en la columna 0</td></tr>
+<tr><td class="l">Sumador completo</td><td class="l">S = impar de unos, Cout = al menos dos unos</td></tr>
+<tr><td class="l">Ripple</td><td class="l">el acarreo avanza etapa por etapa</td></tr>
+<tr><td class="l">Resta</td><td class="l">M = 1: la XOR invierte B y Cin = 1</td></tr>
+<tr><td class="l">Overflow</td><td class="l">V = C3 ⊕ C4, no Cout</td></tr></table></div>
+<p>Para la próxima clase: lectura de circuitos aritméticos combinacionales (texto base), Cuestionario de autoevaluación 04 en el EVA y el diseño previo de la APE 04 (tabla y ecuaciones del sumador completo en papel). En la práctica repito la misma suma en Logisim con 4 sumadores y con el integrado 7483.</p>
+
+<div class="pager"><a href="semana-3.html">← Semana 3</a><span></span></div>
+</main>
+<footer class="pie">Matias Joel Ortega Correa · Universidad Nacional de Loja · Carrera de Computación · 2.º ciclo A · Docente: Ing. Luis Darío Sinche Cueva, Mg.</footer>
+</div>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

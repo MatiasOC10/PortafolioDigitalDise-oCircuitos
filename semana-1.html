@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Semana 1 · Cuaderno de Diseño de Circuitos</title>
+<meta name="description" content="Cuaderno de resumen de Diseño de Circuitos (UNL, Computación): Unidad 1, semanas 1 a 4, con ejercicios resueltos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&family=Literata:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="layout">
+<aside class="side">
+<a class="brand" href="index.html">Cuaderno de Diseño de Circuitos</a>
+<p class="who">Matias Joel Ortega Correa<br>Computación · UNL</p>
+<nav aria-label="Semanas"><a href="index.html">Inicio<small>Portada e índice</small></a><a href="semana-1.html" aria-current="page">Semana 1<small>Números, códigos y compuertas</small></a><a href="semana-2.html">Semana 2<small>Álgebra de Boole y formas canónicas</small></a><a href="semana-3.html">Semana 3<small>Karnaugh, indiferentes y NAND/NOR</small></a><a href="semana-4.html">Semana 4<small>Circuitos aritméticos</small></a></nav>
+</aside>
+<div class="main">
+<main class="sheet">
+
+<h1>Semana 1 · Sistemas numéricos, códigos y compuertas</h1>
+<p class="meta">Unidad 1 · Análisis de lógica combinacional con diseño clásico · Aporta a R1: diseña e implementa circuitos combinacionales básicos con técnicas de diseño clásico.</p>
+<p class="lead">Esta semana aprendí a pasar números entre bases, a representar negativos en complemento a dos, a reconocer los códigos BCD, Gray y ASCII, y a leer las siete compuertas lógicas en un circuito integrado 74LS.</p>
+
+<h2>1. ¿Por qué el computador usa solo 0 y 1?</h2>
+<p>Un transistor es un interruptor controlado por voltaje. Con solo dos estados (abierto y cerrado) es fácil distinguir uno del otro aunque la señal llegue con ruido.</p>
+<p>Un «1» no es un voltaje exacto sino un rango. En la familia 74LS una compuerta promete una salida y la siguiente exige una entrada:</p>
+<div class="wide"><table>
+<tr><th class="l"></th><th>Salida (promete)</th><th>Entrada (exige)</th></tr>
+<tr><td class="l">Nivel 1</td><td>≥ 2,7 V</td><td>se lee como 1 desde 2,0 V</td></tr>
+<tr><td class="l">Nivel 0</td><td>≤ 0,5 V</td><td>se lee como 0 hasta 0,8 V</td></tr>
+</table></div>
+<p>Entre 0,8 V y 2,0 V está la <strong>zona indefinida</strong>: el chip no garantiza nada y puede leer 0 o 1. La causa típica es una entrada sin conectar.</p>
+<h3>Margen de ruido</h3>
+<ul>
+<li>Margen alto = 2,7 − 2,0 = <strong>0,7 V</strong>: un 1 puede perder hasta 0,7 V en el camino y se sigue leyendo como 1.</li>
+<li>Margen bajo = 0,8 − 0,5 = <strong>0,3 V</strong>: un 0 puede subir hasta 0,3 V por ruido y se sigue leyendo como 0.</li>
+</ul>
+<div class="nota">Ejemplo de falla: sale un 0 de 0,5 V, un motor cercano induce 0,4 V de ruido y llegan 0,9 V. Eso cae en la zona indefinida y produce un error.</div>
+<h2>2. Sistemas numéricos y conversiones</h2>
+<p>En un sistema posicional cada posición vale una potencia de la base. En decimal, 555 = 500 + 50 + 5. En binario las posiciones valen 1, 2, 4, 8…, y me aprendí las potencias de 2:</p>
+<div class="wide"><table class="tt"><tr><th>2<sup>7</sup></th><th>2<sup>6</sup></th><th>2<sup>5</sup></th><th>2<sup>4</sup></th><th>2<sup>3</sup></th><th>2<sup>2</sup></th><th>2<sup>1</sup></th><th>2<sup>0</sup></th></tr>
+<tr><td>128</td><td>64</td><td>32</td><td>16</td><td>8</td><td>4</td><td>2</td><td>1</td></tr></table></div>
+<p>Un bit es un dígito binario y un byte son 8 bits. Por ejemplo, <code class="e">1011₂ = 8 + 0 + 2 + 1 = 11</code>.</p>
+<h3>De decimal a binario: dividir entre 2</h3>
+<p>Divido hasta llegar a cociente 0 y leo los restos de abajo hacia arriba. Para 25:</p>
+<div class="wide"><table class="tt"><tr><th>División</th><th>Cociente</th><th>Resto</th></tr>
+<tr><td>25 ÷ 2</td><td>12</td><td>1</td></tr><tr><td>12 ÷ 2</td><td>6</td><td>0</td></tr>
+<tr><td>6 ÷ 2</td><td>3</td><td>0</td></tr><tr><td>3 ÷ 2</td><td>1</td><td>1</td></tr>
+<tr><td>1 ÷ 2</td><td>0</td><td>1</td></tr></table></div>
+<p>Entonces <code class="e">25 = 11001₂</code>. Comprobación: 16 + 8 + 1 = 25.</p>
+<h3>Hexadecimal y octal: abreviaturas del binario</h3>
+<ul>
+<li><strong>Hexadecimal</strong>: grupos de 4 bits desde la derecha. Las letras son 10 = A, 11 = B, 12 = C, 13 = D, 14 = E, 15 = F.</li>
+<li><strong>Octal</strong>: grupos de 3 bits desde la derecha. Si falta, se completa con ceros a la izquierda.</li>
+</ul>
+<p>Ejemplo con 157: <code class="e">157 = 10011101₂ = 9D₁₆ = 235₈</code>. En hexadecimal, 1001 = 9 y 1101 = D. En octal, 010 = 2, 011 = 3 y 101 = 5.</p>
+
+<div class="tool" id="conv">
+<h3>Conversor para comprobar mis resultados</h3>
+<label>Número <input type="text" id="conv-in" value="45" autocomplete="off" spellcheck="false"></label>
+<label>Base <select id="conv-base"><option value="10">decimal (10)</option><option value="2">binario (2)</option><option value="8">octal (8)</option><option value="16">hexadecimal (16)</option></select></label>
+<output class="out" id="conv-out" style="white-space:pre" aria-live="polite"></output>
+</div><div class="ej"><p class="src">Actividad 1 · en parejas · 7 minutos</p><h3>Reto de conversión</h3>
+<p><strong>Enunciado.</strong> (1) Convertir 45 a binario y a hexadecimal. (2) Convertir A7₁₆ a decimal. (3) Convertir 11100101₂ a hexadecimal y a octal.</p>
+<p><strong>Ejercicio 1.</strong> Divido 45 entre 2:</p>
+<div class="wide"><table class="tt"><tr><th>División</th><th>Cociente</th><th>Resto</th></tr>
+<tr><td>45 ÷ 2</td><td>22</td><td>1</td></tr><tr><td>22 ÷ 2</td><td>11</td><td>0</td></tr>
+<tr><td>11 ÷ 2</td><td>5</td><td>1</td></tr><tr><td>5 ÷ 2</td><td>2</td><td>1</td></tr>
+<tr><td>2 ÷ 2</td><td>1</td><td>0</td></tr><tr><td>1 ÷ 2</td><td>0</td><td>1</td></tr></table></div>
+<p>Leyendo los restos de abajo hacia arriba: <code>45 = 101101₂</code>. Para pasar a hexadecimal agrupo de 4 en 4 desde la derecha: <code>0010 1101</code> = <code>2D₁₆</code>. Comprobación con los pesos: 32 + 8 + 4 + 1 = 45, y 2·16 + 13 = 45.</p>
+<p><strong>Ejercicio 2.</strong> A = 10, así que <code>A7₁₆ = 10·16 + 7 = 160 + 7 = 167</code>.</p>
+<p><strong>Ejercicio 3.</strong> Para hexadecimal agrupo de 4: <code>1110 0101</code> = E y 5, es decir <code>E5₁₆</code>. Para octal agrupo de 3 desde la derecha y completo con un cero a la izquierda: <code>011 100 101</code> = 3, 4, 5, es decir <code>345₈</code>.</p>
+<p><strong>Comprobación.</strong> E5₁₆ = 14·16 + 5 = 229 y 345₈ = 3·64 + 4·8 + 5 = 192 + 32 + 5 = 229. Coinciden.</p></div>
+<h2>3. Aritmética binaria</h2>
+<p>La suma binaria es igual que en decimal, con acarreo: <code class="e">0 + 0 = 0</code>, <code class="e">0 + 1 = 1</code>, <code class="e">1 + 1 = 10</code>, y <code class="e">1 + 1 + 1 = 11</code> (escribo 0 y llevo 1).</p>
+<pre><code>acarreo    1 1 1
+             1 0 1 1   (11)
+           + 0 1 1 0   ( 6)
+           ---------
+           1 0 0 0 1   (17)</code></pre>
+
+<h2>4. Números con signo: complemento a dos</h2>
+<p>El circuito no tiene signo «−». Un cuentakilómetros que retrocede desde 000 muestra 999. En binario de 4 bits pasa lo mismo: 0000 − 1 = 1111. Se acordó que 1111 significa −1, 1110 significa −2 y así sucesivamente. Ese acuerdo es el complemento a dos.</p>
+<div class="wide"><table class="tt"><tr><th class="l">Positivos (bit izquierdo = 0)</th><td>0000</td><td>0001</td><td>0010</td><td>0011</td><td>0100</td><td>0101</td><td>0110</td><td>0111</td></tr>
+<tr><th class="l">Valor</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr>
+<tr><th class="l">Negativos (bit izquierdo = 1)</th><td>1000</td><td>1001</td><td>1010</td><td>1011</td><td>1100</td><td>1101</td><td>1110</td><td>1111</td></tr>
+<tr><th class="l">Valor</th><td>−8</td><td>−7</td><td>−6</td><td>−5</td><td>−4</td><td>−3</td><td>−2</td><td>−1</td></tr></table></div>
+<p>Rango con 4 bits: de −8 a +7. Con 8 bits: de −128 a +127.</p>
+<h3>Cómo obtener el negativo: invertir y sumar 1</h3>
+<p>Para −3: 3 = 0011, invierto los bits → 1100, sumo 1 → <code>1101</code> = −3.</p>
+<p>La gran ventaja es que para restar no hace falta un circuito restador: se usa el mismo sumador y unos inversores. Para 5 − 3 = 5 + (−3):</p>
+<pre><code>  0101   (5)
++ 1101   (−3)
+------
+1 0010   → se descarta el bit que sobra a la izquierda → 0010 = 2</code></pre>
+<p>Práctica propia: para escribir −6 en 4 bits tomo 6 = 0110, invierto → 1001, sumo 1 → <code>1010</code>, que en la tabla corresponde a −6.</p>
+<h3>Desbordamiento (overflow)</h3>
+<p>El resultado debe caber en los bits disponibles. Con 4 bits, 7 + 1:</p>
+<pre><code>  0111   (7)
++ 0001   (1)
+------
+  1000   → −8 (incorrecto)</code></pre>
+<p>Dos positivos dieron un negativo. En Java pasa lo mismo con <code>int</code> (32 bits en complemento a dos): si <code>x = 2147483647</code> y hago <code>x = x + 1</code>, queda <code>-2147483648</code>. Lo detectaremos con hardware en la Semana 4.</p>
+
+<h2>5. Códigos: BCD, Gray y ASCII</h2>
+<h3>BCD: cada dígito decimal en 4 bits</h3>
+<p>Sirve para mostrar números en displays (relojes, calculadoras, contadores). Para 157: 1 → <code>0001</code>, 5 → <code>0101</code>, 7 → <code>0111</code>, es decir <code>0001 0101 0111</code>. No es lo mismo que el binario natural de 157, que es 10011101. Las combinaciones 1010 a 1111 no se usan; en la Semana 3 vi que se aprovechan como condiciones indiferentes.</p>
+<h3>Código Gray: entre vecinos cambia un solo bit</h3>
+<p>En binario, de 3 a 4 cambian tres bits a la vez (011 → 100) y un sensor puede leer valores falsos en ese instante. En Gray eso no pasa. Se usa en perillas y encoders rotativos, y su orden 00, 01, 11, 10 es el de los mapas de Karnaugh.</p>
+<p><strong>Método del espejo:</strong> copio la lista al revés, antepongo 0 arriba y 1 abajo.</p>
+<div class="wide"><table class="tt"><tr><th>1 bit</th><th>2 bits</th><th>3 bits</th></tr>
+<tr><td>0</td><td>00</td><td>000</td></tr><tr><td>1</td><td>01</td><td>001</td></tr>
+<tr><td></td><td>11</td><td>011</td></tr><tr><td></td><td>10</td><td>010</td></tr>
+<tr><td></td><td></td><td>110</td></tr><tr><td></td><td></td><td>111</td></tr>
+<tr><td></td><td></td><td>101</td></tr><tr><td></td><td></td><td>100</td></tr></table></div>
+<h3>ASCII: una tabla acordada de letras a números</h3>
+<p>Usa 7 bits, o sea 128 caracteres (letras, dígitos, signos y controles). La palabra HOLA se guarda así:</p>
+<div class="wide"><table class="tt"><tr><th>Letra</th><th>H</th><th>O</th><th>L</th><th>A</th></tr>
+<tr><td>Decimal</td><td>72</td><td>79</td><td>76</td><td>65</td></tr><tr><td>Hexadecimal</td><td>0x48</td><td>0x4F</td><td>0x4C</td><td>0x41</td></tr></table></div>
+<p>Esto responde la pregunta del inicio: el celular guarda la «A» como el número 65 = <code>01000001</code>. La ñ y las tildes no están en ASCII; para eso existe UTF-8.</p>
+
+<h2>6. Las siete compuertas lógicas</h2>
+<ul>
+<li><strong>NOT</strong>: invierte, <code class="e">Y = A'</code>.</li>
+<li><strong>AND</strong>: vale 1 solo si todas las entradas valen 1, <code class="e">Y = A·B</code>.</li>
+<li><strong>OR</strong>: vale 1 si al menos una entrada vale 1, <code class="e">Y = A+B</code>.</li>
+<li><strong>NAND</strong> y <strong>NOR</strong>: son AND y OR con el resultado negado (el círculo en la salida significa «negado»). NAND vale 0 solo si todas valen 1; NOR vale 1 solo si ninguna vale 1.</li>
+<li><strong>XOR</strong>: vale 1 si las entradas son distintas. <strong>XNOR</strong>: vale 1 si son iguales.</li>
+</ul>
+<div class="wide"><table class="tt"><tr><th>A</th><th>B</th><th>AND</th><th>OR</th><th>NAND</th><th>NOR</th><th>XOR</th><th>XNOR</th></tr><tr><td>0</td><td>0</td><td>0</td><td>0</td><td class="one">1</td><td class="one">1</td><td>0</td><td class="one">1</td></tr><tr><td>0</td><td>1</td><td>0</td><td class="one">1</td><td class="one">1</td><td>0</td><td class="one">1</td><td>0</td></tr><tr><td>1</td><td>0</td><td>0</td><td class="one">1</td><td class="one">1</td><td>0</td><td class="one">1</td><td>0</td></tr><tr><td>1</td><td>1</td><td class="one">1</td><td class="one">1</td><td>0</td><td>0</td><td>0</td><td class="one">1</td></tr></table></div>
+<p>NOT: A = 0 → Y = 1 y A = 1 → Y = 0.</p>
+<p>Un ejemplo cotidiano de XOR es la luz de una escalera con dos interruptores: cambia cada vez que muevo cualquiera de los dos. Y un dato para la Semana 3: con solo NAND (o solo NOR) se puede construir cualquier circuito.</p>
+<p>Hay dos normas para dibujar la misma compuerta (ANSI y la de rectángulos). En el curso usamos ANSI; si el simulador muestra rectángulos, se cambia en sus opciones.</p>
+<h3>Las compuertas vienen en circuitos integrados: 74LS08</h3>
+<p>El 74LS08 trae 4 compuertas AND de 2 entradas en un encapsulado DIP-14 (dos filas de 7 pines, encaja en el protoboard). Para contar los pines: muesca arriba, pin 1 arriba a la izquierda y sentido antihorario. La alimentación es el pin 14 = +5 V y el pin 7 = tierra.</p>
+<div class="wide"><table class="tt">
+<tr><th>Pin</th><th>Función</th><th></th><th>Función</th><th>Pin</th></tr>
+<tr><td>1</td><td>1A</td><td></td><td>VCC</td><td>14</td></tr>
+<tr><td>2</td><td>1B</td><td></td><td>4B</td><td>13</td></tr>
+<tr><td>3</td><td>1Y</td><td></td><td>4A</td><td>12</td></tr>
+<tr><td>4</td><td>2A</td><td></td><td>4Y</td><td>11</td></tr>
+<tr><td>5</td><td>2B</td><td></td><td>3B</td><td>10</td></tr>
+<tr><td>6</td><td>2Y</td><td></td><td>3A</td><td>9</td></tr>
+<tr><td>7</td><td>GND</td><td></td><td>3Y</td><td>8</td></tr></table></div>
+<h3>Cómo leer el código impreso</h3>
+<p>Por ejemplo <code>SN 74 LS 08 N</code>: SN es el fabricante (Texas Instruments), 74 es el rango de uso comercial (54 sería militar), LS es la familia (LS = TTL; HC = CMOS), 08 es la función (4 AND de 2 entradas) y N es el encapsulado DIP de plástico. Para buscar la hoja de datos escribo «74LS08 datasheet» y prefiero la web del fabricante (ti.com, onsemi.com). Si venden el 74HC08, tiene la misma función y los mismos pines; es la versión CMOS y sirve igual.</p>
+<div class="ej"><p class="src">Actividad 2 · taller dirigido · individual · 12 minutos</p><h3>Del enunciado a la compuerta</h3>
+<p><strong>Parte 1. ¿Qué compuerta describe cada frase?</strong></p>
+<ul>
+<li>a) «La alarma suena solo si las dos puertas están abiertas»: <strong>AND</strong>, porque necesita que ambas entradas valgan 1.</li>
+<li>b) «La luz del pasillo se enciende si se pulsa cualquiera de los dos botones»: <strong>OR</strong>, porque basta con una.</li>
+<li>c) «El juego marca “diferentes” si los dos jugadores eligen distinto»: <strong>XOR</strong>, que vale 1 cuando las entradas son distintas.</li>
+<li>d) «La bomba de agua se apaga cuando el sensor de nivel está activo»: <strong>NOT</strong>, porque la bomba funciona con el inverso del sensor.</li>
+</ul>
+<p><strong>Parte 2. Tabla de verdad de <code class="e">Y = A·B + C'</code>.</strong> Con 3 entradas hay 2<sup>3</sup> = 8 filas. Agrego las columnas intermedias A·B y C' y después la salida Y. En la primera columna convierto cada fila ABC a decimal (el bonus).</p>
+<div class="wide"><table class="tt"><tr><th>i</th><th>A</th><th>B</th><th>C</th><th>A·B</th><th>C'</th><th>Y</th></tr><tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td class="one">1</td></tr><tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>2</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td class="one">1</td></tr><tr><td>3</td><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>4</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td class="one">1</td></tr><tr><td>5</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr><td>6</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td class="one">1</td></tr><tr><td>7</td><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td class="one">1</td></tr></table></div>
+<p>La salida vale 1 en las filas 0, 2, 4, 6 y 7. Es decir, Y = 1 siempre que C = 0, o cuando A y B valen 1 a la vez. En palabras: «Y vale 1 si C está apagada, o si A y B están encendidas». Con este circuito empezó la Semana 2.</p></div>
+<h2>Resumen de la semana</h2>
+<ul>
+<li><strong>Dos estados:</strong> 0 y 1 son rangos de voltaje, y entre ellos hay una zona indefinida.</li>
+<li><strong>Bases:</strong> binario = potencias de 2; hexadecimal = grupos de 4 bits; octal = grupos de 3 bits.</li>
+<li><strong>Complemento a dos:</strong> el negativo se obtiene invirtiendo y sumando 1, y restar es sumar el negativo.</li>
+<li><strong>Códigos:</strong> BCD para displays, Gray para sensores y ASCII para texto.</li>
+<li><strong>7 compuertas:</strong> NOT, AND, OR, NAND, NOR, XOR y XNOR, con su tabla de verdad.</li>
+<li><strong>Hoja de datos:</strong> pines, alimentación (14 y 7) y función del 74LS08.</li>
+</ul>
+<p>Para la siguiente sesión: lectura del apartado de sistemas numéricos y códigos, Cuestionario 01 en el aula virtual, instalar Logisim-evolution y la práctica APE 01 (comprobación de compuertas en el simulador).</p>
+
+<div class="pager"><a href="index.html">← Inicio</a><a href="semana-2.html">Semana 2 →</a></div>
+</main>
+<footer class="pie">Matias Joel Ortega Correa · Universidad Nacional de Loja · Carrera de Computación · 2.º ciclo A · Docente: Ing. Luis Darío Sinche Cueva, Mg.</footer>
+</div>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

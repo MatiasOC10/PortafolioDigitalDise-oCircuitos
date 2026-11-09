@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inicio · Cuaderno de Diseño de Circuitos</title>
+<meta name="description" content="Cuaderno de resumen de Diseño de Circuitos (UNL, Computación): Unidad 1, semanas 1 a 4, con ejercicios resueltos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&family=Literata:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="layout">
+<aside class="side">
+<a class="brand" href="index.html">Cuaderno de Diseño de Circuitos</a>
+<p class="who">Matias Joel Ortega Correa<br>Computación · UNL</p>
+<nav aria-label="Semanas"><a href="index.html" aria-current="page">Inicio<small>Portada e índice</small></a><a href="semana-1.html">Semana 1<small>Números, códigos y compuertas</small></a><a href="semana-2.html">Semana 2<small>Álgebra de Boole y formas canónicas</small></a><a href="semana-3.html">Semana 3<small>Karnaugh, indiferentes y NAND/NOR</small></a><a href="semana-4.html">Semana 4<small>Circuitos aritméticos</small></a></nav>
+</aside>
+<div class="main">
+<main class="sheet">
+
+<h1>Cuaderno de Diseño de Circuitos</h1>
+<p class="meta">Matias Joel Ortega Correa · Computación, 2.º ciclo A · Universidad Nacional de Loja<br>Docente: Ing. Luis Darío Sinche Cueva, Mg. · Período septiembre 2026 – marzo 2027</p>
+<p class="lead">Aquí reúno lo que estudié en la Unidad 1 (lógica combinacional con diseño clásico): un resumen de cada clase con sus ejercicios resueltos paso a paso, en el orden en que los vimos.</p>
+<p>El circuito de abajo es el de la Semana 1 y la Semana 2: <code class="e">Y = A·B + C'</code>. Toca los interruptores y mira cómo cambia la salida y qué fila de la tabla de verdad se está usando.</p>
+
+<div class="hero" id="hero">
+<div>
+<svg viewBox="0 0 520 240" role="group" aria-label="Circuito Y = A·B + C'. Cada interruptor se puede activar con clic o con Enter.">
+  <polyline id="wA" class="w" points="58,40 150,40"/>
+  <polyline id="wB" class="w" points="58,90 150,90"/>
+  <polyline id="wC" class="w" points="58,190 130,190"/>
+  <path class="g" d="M150,20 H185 A45,45 0 0 1 185,110 H150 Z"/>
+  <polyline id="wAB" class="w" points="230,65 265,65 265,115 308,115"/>
+  <path class="g" d="M130,170 L130,210 L170,190 Z"/>
+  <circle class="g" cx="175" cy="190" r="5"/>
+  <polyline id="wNC" class="w" points="180,190 280,190 280,155 308,155"/>
+  <path class="g" d="M300,95 Q335,95 375,135 Q335,175 300,175 Q322,135 300,95 Z"/>
+  <polyline id="wY" class="w" points="375,135 430,135"/>
+  <circle id="lamp" class="lamp" cx="455" cy="135" r="22"/>
+  <text x="446" y="141">Y</text>
+  <g class="sw" id="swA" data-v="A" role="switch" aria-checked="false" aria-label="Entrada A" tabindex="0"><rect x="8" y="24" width="50" height="32" rx="3"/><text x="14" y="46">A=0</text></g>
+  <g class="sw" id="swB" data-v="B" role="switch" aria-checked="false" aria-label="Entrada B" tabindex="0"><rect x="8" y="74" width="50" height="32" rx="3"/><text x="14" y="96">B=0</text></g>
+  <g class="sw" id="swC" data-v="C" role="switch" aria-checked="false" aria-label="Entrada C" tabindex="0"><rect x="8" y="174" width="50" height="32" rx="3"/><text x="14" y="196">C=0</text></g>
+</svg><p class="read" id="hero-read" aria-live="polite"></p></div>
+<div><div class="wide"><table class="tt" id="hero-tt"><tr><th>A</th><th>B</th><th>C</th><th>A·B</th><th>C'</th><th>Y</th></tr><tr data-i="0"><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td class="one">1</td></tr><tr data-i="1"><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr data-i="2"><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td class="one">1</td></tr><tr data-i="3"><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr data-i="4"><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td class="one">1</td></tr><tr data-i="5"><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td></tr><tr data-i="6"><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td><td class="one">1</td></tr><tr data-i="7"><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td class="one">1</td></tr></table></div></div>
+</div>
+<h2>Qué hay en cada semana</h2>
+<ul class="index-list"><li><a href="semana-1.html">Semana 1 · Sistemas numéricos, códigos y compuertas</a><p>Niveles de voltaje, conversiones, complemento a dos, BCD, Gray, ASCII, las siete compuertas y el 74LS08. Incluye la Actividad 1 y la Actividad 2 resueltas.</p></li><li><a href="semana-2.html">Semana 2 · Álgebra de Boole y formas canónicas</a><p>Postulados, teoremas, De Morgan, minitérminos y maxitérminos, SOP y POS, simplificación algebraica y el taller de mi grupo (aviso de cinturón).</p></li><li><a href="semana-3.html">Semana 3 · Mapas de Karnaugh, indiferentes y NAND/NOR</a><p>Mapas de 3 y 4 variables, implicantes primos, SOP y POS mínimas, condiciones indiferentes, universalidad NAND/NOR y el proyecto integrador.</p></li><li><a href="semana-4.html">Semana 4 · Circuitos aritméticos</a><p>Semisumador, sumador completo, sumador de 4 bits, retardo ripple, resta con XOR, overflow y comparador. Con una calculadora de sumador/restador.</p></li></ul>
+<h2>Las identidades que más uso</h2>
+<p>El docente publica la tabla completa en el EVA; estas son las que más me sirvieron para simplificar a mano. Cada una está demostrada o aplicada en las páginas de las semanas.</p>
+
+<div class="wide"><table>
+<tr><th class="l">Idea</th><th>Forma OR</th><th>Forma AND</th></tr>
+<tr><td class="l">Elemento nulo</td><td><code class="e">X + 1 = 1</code></td><td><code class="e">X · 0 = 0</code></td></tr>
+<tr><td class="l">Idempotencia</td><td><code class="e">X + X = X</code></td><td><code class="e">X · X = X</code></td></tr>
+<tr><td class="l">Absorción</td><td><code class="e">X + XY = X</code></td><td><code class="e">X(X + Y) = X</code></td></tr>
+<tr><td class="l">Absorción del complemento</td><td><code class="e">X + X'Y = X + Y</code></td><td><code class="e">X(X' + Y) = XY</code></td></tr>
+<tr><td class="l">Adyacencia</td><td><code class="e">XY + XY' = X</code></td><td><code class="e">(X+Y)(X+Y') = X</code></td></tr>
+<tr><td class="l">De Morgan</td><td><code class="e">(X + Y)' = X'Y'</code></td><td><code class="e">(XY)' = X' + Y'</code></td></tr>
+</table></div>
+<h2>Cómo leer los mapas y las tablas</h2>
+<p>En las tablas de verdad resalto en verde los 1 de la salida. En los mapas de Karnaugh, cada celda lleva en la esquina su número de minitérmino; los grupos se dibujan con anillos de colores y debajo de cada mapa está la lista de qué celdas cubre cada color y qué término produce.</p>
+
+
+</main>
+<footer class="pie">Matias Joel Ortega Correa · Universidad Nacional de Loja · Carrera de Computación · 2.º ciclo A · Docente: Ing. Luis Darío Sinche Cueva, Mg.</footer>
+</div>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

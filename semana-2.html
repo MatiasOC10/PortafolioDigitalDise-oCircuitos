@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Semana 2 · Cuaderno de Diseño de Circuitos</title>
+<meta name="description" content="Cuaderno de resumen de Diseño de Circuitos (UNL, Computación): Unidad 1, semanas 1 a 4, con ejercicios resueltos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;600&family=Literata:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="layout">
+<aside class="side">
+<a class="brand" href="index.html">Cuaderno de Diseño de Circuitos</a>
+<p class="who">Matias Joel Ortega Correa<br>Computación · UNL</p>
+<nav aria-label="Semanas"><a href="index.html">Inicio<small>Portada e índice</small></a><a href="semana-1.html">Semana 1<small>Números, códigos y compuertas</small></a><a href="semana-2.html" aria-current="page">Semana 2<small>Álgebra de Boole y formas canónicas</small></a><a href="semana-3.html">Semana 3<small>Karnaugh, indiferentes y NAND/NOR</small></a><a href="semana-4.html">Semana 4<small>Circuitos aritméticos</small></a></nav>
+</aside>
+<div class="main">
+<main class="sheet">
+
+<h1>Semana 2 · Álgebra de Boole y formas canónicas</h1>
+<p class="meta">Unidad 1 · R1: diseña e implementa circuitos combinacionales básicos con técnicas de diseño clásico. Lunes: teoría y alarma · Martes: APE 02 en Logisim · Miércoles: taller de simplificación.</p>
+<p class="lead">Esta semana aprendí a ir del enunciado a la tabla de verdad, de ahí a la forma canónica y por último a un circuito simplificado.</p>
+
+<h2>1. Un circuito y una expresión son lo mismo</h2>
+<p>Retomé la APE 01: el circuito formado por una AND de A y B, una NOT de C y una OR que une ambas salidas.</p>
+<div class="wide"><table><tr><th>Circuito</th><th>Expresión</th></tr>
+<tr><td>Cable de entrada</td><td>Variable (A, B, C)</td></tr><tr><td>AND</td><td>Producto ·</td></tr>
+<tr><td>OR</td><td>Suma +</td></tr><tr><td>NOT</td><td>Complemento '</td></tr><tr><td>Salida</td><td>Valor de la expresión</td></tr></table></div>
+<p>El circuito se escribe <code class="e">Y = A·B + C'</code>. La <strong>precedencia</strong> es NOT → AND → OR.</p>
+<p>Respondí las preguntas del inicio con la tabla de la Semana 1: si A = 1, B = 0, C = 0 entonces A·B = 0 y C' = 1, así que Y = 1. Si A = 1, B = 1, C = 1 entonces A·B = 1 y por lo tanto Y = 1 también.</p>
+
+<h2>2. Del enunciado a la especificación</h2>
+<p>La frase «la sirena suena cuando se activan dos sensores» se puede leer de dos maneras:</p>
+<div class="cols">
+<div><h3>Lectura 1: exactamente dos</h3><p>Filas 011, 101, 110, es decir <code class="e">F = Σm(3, 5, 6)</code>. Con los tres sensores activos no suena.</p></div>
+<div><h3>Lectura 2: al menos dos</h3><p>Filas 011, 101, 110 y 111, es decir <code class="e">F = Σm(3, 5, 6, 7)</code>. Es la que pide el cliente.</p></div>
+</div>
+<p>Lo importante es fijar la lectura antes de diseñar.</p>
+
+<h2>3. Postulados de Huntington y dualidad</h2>
+<p>El álgebra de Boole trabaja sobre el conjunto {0, 1} con tres operaciones: + (OR), · (AND) y ' (NOT).</p>
+<div class="wide"><table><tr><th>Postulado</th><th>Forma OR</th><th>Forma AND (dual)</th></tr>
+<tr><td>Identidad</td><td><code class="e">X + 0 = X</code></td><td><code class="e">X · 1 = X</code></td></tr>
+<tr><td>Complemento</td><td><code class="e">X + X' = 1</code></td><td><code class="e">X · X' = 0</code></td></tr>
+<tr><td>Conmutativa</td><td><code class="e">X + Y = Y + X</code></td><td><code class="e">XY = YX</code></td></tr>
+<tr><td>Distributiva</td><td><code class="e">X(Y + Z) = XY + XZ</code></td><td><strong><code class="e">X + YZ = (X + Y)(X + Z)</code></strong></td></tr></table></div>
+<p><strong>Dualidad:</strong> si intercambio + por · y 0 por 1 (sin complementar variables), la identidad sigue siendo válida. La distributiva de la derecha es la que más me sorprendió porque no existe en el álgebra común.</p>
+
+<h3>Demostración de la distributiva dual</h3>
+<p>Quiero probar <code class="e">A + BC = (A + B)(A + C)</code> partiendo del lado derecho:</p>
+<div class="wide"><table><tr><th class="l">Paso</th><th class="l">Justificación</th></tr>
+<tr><td class="l"><code class="e">(A + B)(A + C)</code></td><td class="l">punto de partida</td></tr>
+<tr><td class="l"><code class="e">= AA + AC + AB + BC</code></td><td class="l">distributiva</td></tr>
+<tr><td class="l"><code class="e">= A + AC + AB + BC</code></td><td class="l">idempotencia: AA = A</td></tr>
+<tr><td class="l"><code class="e">= A(1 + C + B) + BC</code></td><td class="l">factor común A</td></tr>
+<tr><td class="l"><code class="e">= A + BC</code></td><td class="l">elemento nulo: 1 + … = 1</td></tr></table></div>
+
+<h2>4. Teoremas: mi tabla de consulta</h2>
+<p>La tabla se publica en el EVA: no se memoriza, se consulta y se aplica.</p>
+<div class="wide"><table><tr><th>Teorema</th><th>Forma OR</th><th>Forma AND</th></tr>
+<tr><td>Elemento nulo</td><td><code class="e">X + 1 = 1</code></td><td><code class="e">X · 0 = 0</code></td></tr>
+<tr><td>Idempotencia</td><td><code class="e">X + X = X</code></td><td><code class="e">X · X = X</code></td></tr>
+<tr><td>Involución</td><td colspan="2"><code class="e">(X')' = X</code></td></tr>
+<tr><td>Absorción</td><td><code class="e">X + XY = X</code></td><td><code class="e">X(X + Y) = X</code></td></tr>
+<tr><td>Absorción del complemento</td><td><code class="e">X + X'Y = X + Y</code></td><td><code class="e">X(X' + Y) = XY</code></td></tr>
+<tr><td>Adyacencia</td><td><code class="e">XY + XY' = X</code></td><td><code class="e">(X + Y)(X + Y') = X</code></td></tr>
+<tr><td>Consenso</td><td><code class="e">XY + X'Z + YZ = XY + X'Z</code></td><td><code class="e">(X+Y)(X'+Z)(Y+Z) = (X+Y)(X'+Z)</code></td></tr></table></div>
+
+<h2>5. Leyes de De Morgan</h2>
+<p><strong>Rompo la barra y cambio el operador:</strong> <code class="e">(AB)' = A' + B'</code> y <code class="e">(A + B)' = A'B'</code>. Generaliza a n variables, por ejemplo <code class="e">(A + B + C)' = A'B'C'</code>. En el circuito, una NAND equivale a una OR con las entradas negadas, y una NOR equivale a una AND con las entradas negadas.</p>
+<div class="ej"><p class="src">En parejas · 5 minutos</p><h3>Apliquen De Morgan</h3>
+<p><strong>1.</strong> <code class="e">(A·B·C)'</code>. Se rompe la barra y cambia el operador: <code class="e">A' + B' + C'</code>.</p>
+<p><strong>2.</strong> <code class="e">(A + B'C)'</code>. Primero De Morgan sobre la suma: <code class="e">A' · (B'C)'</code>. Luego sobre el producto interno, <code class="e">(B'C)' = B + C'</code>, así que queda <code class="e">A'(B + C')</code>. Distribuyo: <code class="e">A'B + A'C'</code>.</p>
+<p><strong>3.</strong> <code class="e">(A'B + C)'</code>. De Morgan sobre la suma: <code class="e">(A'B)' · C'</code>. Luego <code class="e">(A'B)' = A + B'</code>, entonces queda <code class="e">(A + B')C'</code>. Distribuyo: <code class="e">AC' + B'C'</code>.</p>
+<p><strong>Verificación con una fila.</strong> Para el ejercicio 2 tomo A = 0, B = 1, C = 0. Lado izquierdo: B'C = 0·0 = 0, A + 0 = 0, y su complemento es 1. Lado derecho: A'B + A'C' = 1·1 + 1·1 = 1. Coinciden.</p></div>
+<h2>6. Minitérminos y maxitérminos</h2>
+<p>Un <strong>minitérmino</strong> mᵢ es un producto donde la variable en 1 aparece sin complemento y la que está en 0 aparece complementada. Un <strong>maxitérmino</strong> Mᵢ es una suma donde la variable en 0 aparece sin complemento y la que está en 1 aparece complementada. Se cumple Mᵢ = (mᵢ)'. Todavía no hay una F: son las 8 piezas posibles y cada función elige cuáles usa.</p>
+<div class="wide"><table class="tt"><tr><th>i</th><th>A</th><th>B</th><th>C</th><th>mᵢ (vale 1)</th><th>Mᵢ (vale 0)</th></tr><tr><td>0</td><td>0</td><td>0</td><td>0</td><td>A'B'C'</td><td>A + B + C</td></tr><tr><td>1</td><td>0</td><td>0</td><td>1</td><td>A'B'C</td><td>A + B + C'</td></tr><tr><td>2</td><td>0</td><td>1</td><td>0</td><td>A'BC'</td><td>A + B' + C</td></tr><tr><td>3</td><td>0</td><td>1</td><td>1</td><td>A'BC</td><td>A + B' + C'</td></tr><tr><td>4</td><td>1</td><td>0</td><td>0</td><td>AB'C'</td><td>A' + B + C</td></tr><tr><td>5</td><td>1</td><td>0</td><td>1</td><td>AB'C</td><td>A' + B + C'</td></tr><tr><td>6</td><td>1</td><td>1</td><td>0</td><td>ABC'</td><td>A' + B' + C</td></tr><tr><td>7</td><td>1</td><td>1</td><td>1</td><td>ABC</td><td>A' + B' + C'</td></tr></table></div>
+<h2>7. Formas canónicas: SOP y POS</h2>
+<p>Uso como ejemplo la sirena (al menos 2 sensores):</p>
+<div class="wide"><table class="tt"><tr><th>i</th><th>A</th><th>B</th><th>C</th><th>F</th><th>mᵢ de la fila</th><th>Mᵢ de la fila</th></tr><tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>A'B'C'</td><td>(A + B + C)</td></tr><tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>A'B'C</td><td>(A + B + C')</td></tr><tr><td>2</td><td>0</td><td>1</td><td>0</td><td>0</td><td>A'BC'</td><td>(A + B' + C)</td></tr><tr><td>3</td><td>0</td><td>1</td><td>1</td><td class="one">1</td><td>A'BC</td><td>(A + B' + C')</td></tr><tr><td>4</td><td>1</td><td>0</td><td>0</td><td>0</td><td>AB'C'</td><td>(A' + B + C)</td></tr><tr><td>5</td><td>1</td><td>0</td><td>1</td><td class="one">1</td><td>AB'C</td><td>(A' + B + C')</td></tr><tr><td>6</td><td>1</td><td>1</td><td>0</td><td class="one">1</td><td>ABC'</td><td>(A' + B' + C)</td></tr><tr><td>7</td><td>1</td><td>1</td><td>1</td><td class="one">1</td><td>ABC</td><td>(A' + B' + C')</td></tr></table></div>
+<div class="cols">
+<div><h3>SOP: miro los 1</h3><p>Por cada fila con F = 1 tomo su minitérmino y los uno con OR.</p><p><code class="e">F = Σm(3, 5, 6, 7)</code><br><code class="e">= A'BC + AB'C + ABC' + ABC</code></p></div>
+<div><h3>POS: miro los 0</h3><p>Por cada fila con F = 0 tomo su maxitérmino y los uno con AND.</p><p><code class="e">F = ΠM(0, 1, 2, 4)</code><br><code class="e">= (A+B+C)(A+B+C')(A+B'+C)(A'+B+C)</code></p></div>
+</div>
+<p>Es la misma función con dos descripciones. SOP dice «F vale 1 si la entrada es la combinación 3, o la 5, o la 6, o la 7». POS dice «F vale 1 si la entrada no es la 0, y no es la 1, y no es la 2, y no es la 4». Entre ambas listas están todas las filas (0 a 7): los índices de ΠM son los que faltan en Σm.</p>
+<h3>¿SOP o POS?</h3>
+<ul>
+<li>Pocos 1 en la tabla: SOP lleva menos términos.</li>
+<li>Pocos 0 en la tabla: POS lleva menos términos.</li>
+<li>Solo hay NAND disponibles: SOP → NAND-NAND (7400).</li>
+<li>Solo hay NOR disponibles: POS → NOR-NOR (7402).</li>
+</ul>
+<p>El criterio final es el costo: compuertas, circuitos integrados y niveles lógicos.</p>
+
+<h2>8. Resolución guiada: alarma de 3 sensores</h2>
+<p><strong>Enunciado.</strong> Una bodega tiene tres sensores: puerta (A), ventana (B) y movimiento (C). Para evitar falsas alarmas, la sirena F suena si al menos dos sensores se activan. La tabla es la de la sección anterior.</p>
+<p><strong>De la canónica a la simplificada.</strong> Parto de <code class="e">F = A'BC + AB'C + ABC' + ABC</code>. Por idempotencia, ABC se puede escribir tres veces (ABC = ABC + ABC + ABC), un término sirve para tres pares:</p>
+<ul>
+<li><code class="e">A'BC + ABC = BC(A' + A) = BC</code></li><li><code class="e">AB'C + ABC = AC(B' + B) = AC</code></li><li><code class="e">ABC' + ABC = AB(C' + C) = AB</code></li>
+</ul>
+<p>Resultado: <strong><code class="e">F = AB + AC + BC</code></strong>. En POS: <code class="e">(A + B)(A + C)(B + C)</code>.</p>
+<p><strong>Costo de cada versión.</strong> La canónica necesita 7404 + 2×7411 + 7432 = <strong>4 CI</strong>. La simplificada necesita 7408 + 7432 = <strong>2 CI</strong>. Lo que simplifico en papel lo ahorro en hardware.</p>
+
+<h2>9. Simplificar con álgebra: procedimiento</h2>
+<ol>
+<li>Pares adyacentes: <code class="e">XY + XY' = X</code>.</li>
+<li>Duplicar un término si hace falta: <code class="e">X = X + X</code>.</li>
+<li>Absorción: <code class="e">X + XY = X</code>.</li>
+<li>Absorción del complemento: <code class="e">X + X'Y = X + Y</code>.</li>
+<li>Consenso: <code class="e">XY + X'Z + YZ = XY + X'Z</code>.</li>
+</ol>
+<p>No hay un algoritmo que garantice el mínimo, y por eso la Semana 3 llegan los mapas de Karnaugh. Dos expresiones son equivalentes si y solo si tienen la misma tabla de verdad, así que siempre compruebo con una fila.</p>
+<div class="ej"><p class="src">Ejemplo de la clase del miércoles</p><h3>Simplificar F = A + A'B + AB'C</h3>
+<div class="wide"><table><tr><th class="l">Expresión</th><th class="l">Justificación</th></tr>
+<tr><td class="l"><code class="e">F = A + A'B + AB'C</code></td><td class="l">expresión original</td></tr>
+<tr><td class="l"><code class="e">= (A + B) + AB'C</code></td><td class="l">absorción del complemento: A + A'B = A + B</td></tr>
+<tr><td class="l"><code class="e">= A + AB'C + B</code></td><td class="l">conmutativa</td></tr>
+<tr><td class="l"><code class="e">= A + B</code></td><td class="l">absorción: A + A(B'C) = A</td></tr></table></div>
+<p>Pasé de 3 términos (5 literales) a una sola OR de 2 entradas. <strong>Comprobación</strong> con A = 0, B = 0, C = 1: la expresión original da 0 + 0 + 0 = 0 y la simplificada A + B da 0. Coinciden.</p></div><div class="ej"><p class="src">Taller dirigido por grupos · G4 y G8</p><h3>Aviso de cinturón (Grupo 8)</h3>
+<p><strong>Enunciado.</strong> El aviso suena si el motor está encendido (E) y el cinturón no está puesto o la puerta está abierta (P). Entregar: tabla, Σm y ΠM, SOP canónica, versión simplificada, y recuento de compuertas y CI.</p>
+<h3>Variables y especificación</h3>
+<ul>
+<li>E = 1 si el motor está encendido.</li>
+<li>C = 1 si el cinturón está puesto (por eso «cinturón no puesto» es C').</li>
+<li>P = 1 si la puerta está abierta.</li>
+<li>Leí el enunciado así: el motor tiene que estar encendido, y además falla el cinturón o hay puerta abierta. O sea <code class="e">F = E·(C' + P)</code>. Con el motor apagado nunca suena.</li>
+</ul>
+<h3>Tabla de verdad</h3>
+<div class="wide"><table class="tt"><tr><th>i</th><th>E</th><th>C</th><th>P</th><th>C'</th><th>C' + P</th><th>F</th></tr><tr><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td></tr><tr><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td></tr><tr><td>2</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>3</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td></tr><tr><td>4</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td class="one">1</td></tr><tr><td>5</td><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td class="one">1</td></tr><tr><td>6</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>7</td><td>1</td><td>1</td><td>1</td><td>0</td><td>1</td><td class="one">1</td></tr></table></div>
+<h3>Σm y ΠM</h3>
+<p><code class="e">F = Σm(4, 5, 7)</code> y <code class="e">F = ΠM(0, 1, 2, 3, 6)</code>. Los índices de las dos listas son complementarios: (4, 5, 7) y (0, 1, 2, 3, 6) completan las 8 filas.</p>
+<h3>SOP canónica</h3>
+<p><code class="e">F = EC'P' + EC'P + ECP</code>, con <code class="e">m4 = EC'P'</code>, <code class="e">m5 = EC'P</code> y <code class="e">m7 = ECP</code>.</p>
+<h3>Simplificación</h3>
+<ul>
+<li><code class="e">EC'P' + EC'P = EC'(P' + P) = EC'</code></li>
+<li><code class="e">EC'P + ECP = EP(C' + C) = EP</code> (los dos términos comparten m5; uso idempotencia)</li>
+<li>Resultado: <strong><code class="e">F = EC' + EP</code></strong>, que equivale a <code class="e">E(C' + P)</code>.</li>
+</ul>
+<p>También lo comprobé con el mapa de la Semana 3: los grupos EC' (m4, m5) y EP (m5, m7) dan la SOP mínima, y al agrupar los ceros obtengo la POS <code class="e">E(C' + P)</code>.</p>
+<h3>Recuento de compuertas y CI</h3>
+<div class="wide"><table><tr><th class="l">Versión</th><th class="l">Compuertas</th><th class="l">Circuitos integrados</th></tr>
+<tr><td class="l">SOP canónica</td><td class="l">2 NOT + 3 AND de 3 entradas + OR de 3 entradas (2 OR de 2) = 7</td><td class="l">7404 + 7411 + 7432 = 3 CI</td></tr>
+<tr><td class="l">SOP simplificada <code class="e">EC' + EP</code></td><td class="l">1 NOT + 2 AND + 1 OR = 4</td><td class="l">7404 + 7408 + 7432 = 3 CI</td></tr>
+<tr><td class="l">Factorizada <code class="e">E(C' + P)</code></td><td class="l">1 NOT + 1 OR + 1 AND = 3</td><td class="l">7404 + 7432 + 7408 = 3 CI</td></tr></table></div>
+<p>En este problema el ahorro está en el número de compuertas (de 7 a 3) y en los literales (de 9 a 3); la cantidad de chips se queda en 3 porque cada tipo de compuerta pide su propio integrado.</p></div><div class="ej"><p class="src">Individual, al cierre del lunes</p><h3>Ticket de salida</h3>
+<p><strong>1.</strong> Aplicar De Morgan a <code class="e">(A' + BC)'</code>. Primero la barra sobre la suma: <code class="e">(A')' · (BC)' = A·(BC)'</code>. Luego la del producto: <code class="e">(BC)' = B' + C'</code>. Queda <code class="e">A(B' + C')</code>, y distribuyendo, <code>AB' + AC'</code>. Compruebo con A = 1, B = 0, C = 0: el original da (0 + 0)' = 1 y el resultado da 1 + 1 = 1.</p>
+<p><strong>2.</strong> m4 corresponde a la fila 100, así que A = 1 y B = C = 0: <code>m4 = AB'C'</code>. M4 es la suma con la variable en 0 sin complemento y la que está en 1 complementada: <code>M4 = A' + B + C</code>. Se cumple M4 = (m4)'.</p></div>
+<h2>Resumen de la semana</h2>
+<ul>
+<li><strong>Circuito = expresión:</strong> lo que simplifico en papel lo ahorro en hardware.</li>
+<li><strong>La tabla manda:</strong> dos expresiones son equivalentes si y solo si tienen la misma tabla.</li>
+<li><strong>Canónica:</strong> siempre se puede (Σm con las filas en 1, ΠM con las filas en 0) y es única.</li>
+<li><strong>Simplificar es elegir por costo:</strong> menos compuertas, CI y niveles. El álgebra no garantiza el mínimo.</li>
+</ul>
+<p>Tarea: lectura de Garza (2025) sobre álgebra de Boole, De Morgan y formas canónicas; complemento en inglés de Carpinelli (2023); Cuestionario N.º 02 en el EVA.</p>
+
+<div class="pager"><a href="semana-1.html">← Semana 1</a><a href="semana-3.html">Semana 3 →</a></div>
+</main>
+<footer class="pie">Matias Joel Ortega Correa · Universidad Nacional de Loja · Carrera de Computación · 2.º ciclo A · Docente: Ing. Luis Darío Sinche Cueva, Mg.</footer>
+</div>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>
