@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cuaderno de Síntesis · Unidad 1 · Diseño de Circuitos</title>
+<meta name="description" content="Cuaderno de síntesis de la Unidad 1 (Lógica combinacional con diseño clásico) – Diseño de Circuitos, Computación UNL.">
+<style>
+  :root{
+    --ink:#1d2430; --muted:#5b6575; --line:#d9dee7; --bg:#fbfaf7; --paper:#ffffff;
+    --accent:#1f5fbf; --accent-soft:#e8f0fc; --red:#c0392b; --green:#2e8b57; --purple:#8e44ad;
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    color-scheme: light;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif}
+  .layout{display:grid;grid-template-columns:270px 1fr;min-height:100vh}
+  nav{position:sticky;top:0;height:100vh;overflow:auto;background:#f2f0ea;border-right:1px solid var(--line);padding:26px 18px}
+  nav .brand{font-weight:700;font-size:15px;line-height:1.3;margin-bottom:4px}
+  nav .sub{font-size:12.5px;color:var(--muted);margin-bottom:20px}
+  nav a{display:block;color:var(--ink);text-decoration:none;font-size:14px;padding:5px 10px;border-radius:6px}
+  nav a:hover{background:#e4e1d8}
+  nav a.lvl2{padding-left:22px;font-size:13px;color:var(--muted)}
+  nav .group{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:16px 10px 4px}
+  main{max-width:960px;padding:40px 56px 80px}
+  header.cover{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:34px 38px;margin-bottom:34px}
+  .cover .inst{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+  .cover h1{font-size:32px;line-height:1.2;margin:10px 0 6px}
+  .cover .unit{font-size:18px;color:var(--accent);margin:0 0 20px;font-weight:600}
+  .meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 28px;font-size:14.5px}
+  .meta b{color:var(--muted);font-weight:600}
+  section.week{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:30px 38px;margin:0 0 30px}
+  h2{font-size:24px;margin:0 0 4px;line-height:1.25}
+  .tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:3px 10px;border-radius:99px;margin-bottom:10px}
+  h3{font-size:18.5px;margin:30px 0 8px;padding-top:6px;border-top:1px dashed var(--line)}
+  h4{font-size:16px;margin:20px 0 6px}
+  p{margin:8px 0}
+  .lead{color:var(--muted);font-size:15px;margin-bottom:6px}
+  .ov{text-decoration:overline;text-decoration-thickness:1.5px}
+  code,.mono{font-family:var(--mono);font-size:.92em}
+  .eq{font-family:Cambria, "Times New Roman", serif;font-size:19px;text-align:center;margin:14px 0;padding:10px;background:#f7f8fb;border-radius:8px}
+  table{border-collapse:collapse;margin:12px 0;font-size:14.5px}
+  th,td{border:1px solid var(--line);padding:5px 11px;text-align:center}
+  th{background:#f3f5f9;font-weight:600}
+  td.l,th.l{text-align:left}
+  tr.hl td{background:#fff6dc}
+  .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start}
+  .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+  figure{margin:16px 0;text-align:center}
+  figure img,figure svg{max-width:100%;height:auto}
+  figcaption{font-size:13px;color:var(--muted);margin-top:6px}
+  .gates figure{background:#f9fafc;border:1px solid var(--line);border-radius:10px;padding:10px 6px;margin:0}
+  .gates img{height:52px}
+  .box{border-left:4px solid var(--accent);background:var(--accent-soft);padding:12px 16px;border-radius:0 8px 8px 0;margin:16px 0;font-size:15px}
+  .box.warn{border-color:#d68910;background:#fdf3e1}
+  .box.ok{border-color:var(--green);background:#e8f5ee}
+  .box b:first-child{display:block;margin-bottom:2px}
+  .solved{border:1px solid #cfd9ec;border-radius:12px;padding:16px 22px;margin:18px 0;background:#fcfdff}
+  .solved > .ttl{font-weight:700;color:var(--accent);font-size:15px;margin-bottom:6px}
+  ol.steps li{margin:6px 0}
+  details{border:1px solid var(--line);border-radius:10px;padding:10px 16px;margin:10px 0;background:#fcfcfa}
+  details summary{cursor:pointer;font-weight:600}
+  details[open] summary{margin-bottom:8px}
+  .pill{display:inline-block;font-size:12px;padding:1px 8px;border-radius:99px;background:#eef1f6;color:var(--muted);margin-left:6px}
+  .chk{color:var(--green);font-weight:700}
+  footer{color:var(--muted);font-size:13px;text-align:center;margin-top:30px}
+  @media (max-width:900px){
+    .layout{grid-template-columns:1fr} nav{position:static;height:auto}
+    main{padding:20px 14px} section.week,header.cover{padding:22px 18px}
+    .grid2,.grid3,.meta{grid-template-columns:1fr}
+  }
+  @media print{
+    nav{display:none} .layout{display:block} main{max-width:none;padding:0}
+    section.week{break-inside:auto;border:none;padding:0 0 20px} details{display:block} details>*{display:block}
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+<nav>
+  <div class="brand">Cuaderno de Síntesis · Unidad 1</div>
+  <div class="sub">Diseño de Circuitos · 2.º ciclo A</div>
+  <a href="#portada">Portada</a>
+  <a href="#mapa">Mapa de la unidad</a>
+  <div class="group">Semanas</div>
+  <a href="#s1">1 · Sistemas numéricos y compuertas</a>
+  <a href="#s2">2 · Álgebra de Boole y formas canónicas</a>
+  <a href="#s3">3 · Mapas de Karnaugh y NAND/NOR</a>
+  <a href="#s4">4 · Bloques aritméticos</a>
+  <a href="#s5">5 · Selección y codificación de datos</a>
+  <a href="#s6">6 · Consolidación</a>
+  <div class="group">Cierre</div>
+  <a href="#procedimiento">Procedimiento general de diseño</a>
+  <a href="#errores">Errores frecuentes</a>
+  <a href="#ejercicios">Ejercicios de repaso</a>
+  <a href="#dudas">Registro de dudas pendientes</a>
+  <a href="#ia">Declaración de uso de IA</a>
+  <a href="#referencias">Referencias</a>
+</nav>
+
+<main>
+
+<!-- ============================================================ PORTADA -->
+<header class="cover" id="portada">
+  <div class="inst">Universidad Nacional de Loja · Facultad de la Energía, las Industrias y los Recursos Naturales No Renovables · Carrera de Computación</div>
+  <h1>Cuaderno de Síntesis</h1>
+  <p class="unit">Unidad 1 — Análisis de lógica combinacional con diseño clásico</p>
+  <div class="meta">
+    <div><b>Asignatura:</b> Diseño de Circuitos (E2C2A1)</div>
+    <div><b>Docente:</b> Ing. Luis Darío Sinche Cueva</div>
+    <div><b>Estudiante:</b> Matías Joel Ortega Correa</div>
+    <div><b>Ciclo / paralelo:</b> 2.º ciclo · A · Grupo 8</div>
+    <div><b>Período:</b> septiembre 2026 – marzo 2027</div>
+    <div><b>Semanas cubiertas:</b> 1 a 6</div>
+  </div>
+  <div class="box" style="margin-top:22px">
+    <b>Resultado de aprendizaje R1</b>
+    Diseña e implementa circuitos combinacionales básicos utilizando técnicas de diseño clásico, bajo los principios de solidaridad, transparencia, responsabilidad y honestidad.
+  </div>
+  <p class="lead">Este cuaderno consolida las lecturas, las prácticas APE 01–05 y los apuntes de clase de las semanas 1 a 5. Cada técnica estudiada incluye un circuito resuelto paso a paso. Al final está el registro de dudas pendientes.</p>
+</header>
+
+<!-- ============================================================ MAPA -->
+<section class="week" id="mapa">
+  <span class="tag">Visión general</span>
+  <h2>Mapa de la unidad</h2>
+  <p>Todas las semanas aplican el mismo procedimiento. Cambia la herramienta que se usa en cada paso:</p>
+  <figure>
+  <svg viewBox="0 0 860 150" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13">
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1f5fbf"/></marker></defs>
+    <g stroke="#1f5fbf" stroke-width="1.6" fill="#e8f0fc">
+      <rect x="5" y="30" width="140" height="58" rx="10"/><rect x="180" y="30" width="140" height="58" rx="10"/>
+      <rect x="355" y="30" width="140" height="58" rx="10"/><rect x="530" y="30" width="140" height="58" rx="10"/>
+      <rect x="705" y="30" width="150" height="58" rx="10"/>
+    </g>
+    <g stroke="#1f5fbf" stroke-width="1.8" marker-end="url(#ar)">
+      <line x1="145" y1="59" x2="178" y2="59"/><line x1="320" y1="59" x2="353" y2="59"/>
+      <line x1="495" y1="59" x2="528" y2="59"/><line x1="670" y1="59" x2="703" y2="59"/>
+    </g>
+    <g text-anchor="middle" font-weight="600" fill="#1d2430">
+      <text x="75" y="56">Requerimiento</text><text x="75" y="73" font-weight="400" font-size="11.5">lenguaje natural</text>
+      <text x="250" y="56">Tabla de verdad</text><text x="250" y="73" font-weight="400" font-size="11.5">Σm / ΠM</text>
+      <text x="425" y="56">Expresión mínima</text><text x="425" y="73" font-weight="400" font-size="11.5">álgebra · K-map</text>
+      <text x="600" y="56">Esquema</text><text x="600" y="73" font-weight="400" font-size="11.5">compuertas · bloques</text>
+      <text x="780" y="56">Verificación</text><text x="780" y="73" font-weight="400" font-size="11.5">simulación Logisim</text>
+    </g>
+    <g text-anchor="middle" fill="#5b6575" font-size="11.5">
+      <text x="75" y="115">S1–S2</text><text x="250" y="115">S1–S2</text><text x="425" y="115">S2–S3</text>
+      <text x="600" y="115">S3–S5</text><text x="780" y="115">APE 01–05</text>
+    </g>
+  </svg>
+  <figcaption>Del requerimiento al circuito verificado: el hilo conductor de la Unidad 1.</figcaption>
+  </figure>
+  <table>
+    <tr><th>Semana</th><th class="l">Contenido</th><th>Práctica (APE)</th><th class="l">Circuito resuelto en este cuaderno</th></tr>
+    <tr><td>1</td><td class="l">Sistemas numéricos, códigos y compuertas</td><td>APE 01</td><td class="l">Conversiones, complemento a 2 y verificación de las 7 compuertas</td></tr>
+    <tr><td>2</td><td class="l">Álgebra de Boole y formas canónicas</td><td>APE 02</td><td class="l">Alarma de tres sensores (canónica vs. simplificada)</td></tr>
+    <tr><td>3</td><td class="l">Mapas de Karnaugh, condiciones indiferentes, NAND/NOR</td><td>APE 03</td><td class="l">Función de 4 variables con <i>don't cares</i> implementada solo con NAND</td></tr>
+    <tr><td>4</td><td class="l">Semisumador, sumador completo, sumador paralelo, resta, comparador</td><td>APE 04</td><td class="l">Sumador completo, sumador/restador de 4 bits y comparador</td></tr>
+    <tr><td>5</td><td class="l">MUX, DEMUX, codificador, decodificador, display 7 segmentos</td><td>APE 05</td><td class="l">Función con MUX 8:1 y 4:1, segmento <i>a</i> del decodificador BCD</td></tr>
+    <tr><td>6</td><td class="l">Consolidación y evaluación sumativa</td><td>1.er avance PIS</td><td class="l">Procedimiento general, errores frecuentes y repaso</td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ SEMANA 1 -->
+<section class="week" id="s1">
+  <span class="tag">Semana 1</span>
+  <h2>Sistemas numéricos, códigos y compuertas lógicas</h2>
+  <p class="lead">Un computador representa toda la información con dos estados eléctricos (bajo = 0, alto = 1). Para leer y escribir esos patrones cómodamente usamos varias bases y códigos.</p>
+
+  <h3>1.1 Sistemas de numeración</h3>
+  <table>
+    <tr><th>Sistema</th><th>Base</th><th>Dígitos</th><th class="l">Uso típico</th></tr>
+    <tr><td>Binario</td><td>2</td><td>0, 1</td><td class="l">Lo que realmente maneja el hardware</td></tr>
+    <tr><td>Octal</td><td>8</td><td>0–7</td><td class="l">Agrupa 3 bits</td></tr>
+    <tr><td>Decimal</td><td>10</td><td>0–9</td><td class="l">Uso humano</td></tr>
+    <tr><td>Hexadecimal</td><td>16</td><td>0–9, A–F</td><td class="l">Agrupa 4 bits (direcciones, colores, ASCII)</td></tr>
+  </table>
+  <ul>
+    <li><b>Decimal → base b:</b> divisiones sucesivas entre b. Los residuos, leídos de abajo hacia arriba, forman el número. Para la parte fraccionaria se multiplica sucesivamente por b.</li>
+    <li><b>Base b → decimal:</b> suma de cada dígito por su peso b<sup>i</sup>.</li>
+    <li><b>Binario ↔ octal/hex:</b> se agrupan bits de 3 en 3 (octal) o de 4 en 4 (hex) desde el punto binario.</li>
+  </ul>
+
+  <div class="solved">
+    <div class="ttl">Ejemplo resuelto 1 · Convertir 157₁₀ a binario, octal y hexadecimal</div>
+    <div class="grid2">
+      <table>
+        <tr><th>División</th><th>Cociente</th><th>Residuo</th></tr>
+        <tr><td>157 ÷ 2</td><td>78</td><td>1</td></tr>
+        <tr><td>78 ÷ 2</td><td>39</td><td>0</td></tr>
+        <tr><td>39 ÷ 2</td><td>19</td><td>1</td></tr>
+        <tr><td>19 ÷ 2</td><td>9</td><td>1</td></tr>
+        <tr><td>9 ÷ 2</td><td>4</td><td>1</td></tr>
+        <tr><td>4 ÷ 2</td><td>2</td><td>0</td></tr>
+        <tr><td>2 ÷ 2</td><td>1</td><td>0</td></tr>
+        <tr><td>1 ÷ 2</td><td>0</td><td>1</td></tr>
+      </table>
+      <div>
+        <p>Leyendo los residuos de abajo hacia arriba:</p>
+        <p class="eq">157₁₀ = 1001 1101₂</p>
+        <p><b>Octal</b> (grupos de 3): <span class="mono">010 011 101</span> → <b>235₈</b></p>
+        <p><b>Hexadecimal</b> (grupos de 4): <span class="mono">1001 1101</span> → <b>9D₁₆</b></p>
+        <p><b>Comprobación:</b> 128 + 16 + 8 + 4 + 1 = 157 <span class="chk">✓</span></p>
+        <p><b>Con fracción:</b> 101101.101₂ = 32 + 8 + 4 + 1 + 0.5 + 0.125 = <b>45.625₁₀</b></p>
+      </div>
+    </div>
+  </div>
+
+  <h3>1.2 Aritmética binaria y complemento a dos</h3>
+  <p>Reglas de la suma: 0+0 = 0, 0+1 = 1, 1+1 = 0 con acarreo 1, y 1+1+1 = 1 con acarreo 1.</p>
+  <p><b>Complemento a dos (C2)</b> de un número de <i>n</i> bits: se invierten todos los bits (complemento a uno) y se suma 1. En C2 el bit más significativo es el signo, y con 8 bits el rango va de −128 a +127. La ventaja es que <b>restar se reduce a sumar</b>: A − B = A + C2(B).</p>
+
+  <div class="solved">
+    <div class="ttl">Ejemplo resuelto 2 · 60 − 45 con complemento a dos (8 bits)</div>
+    <table>
+      <tr><th class="l">Paso</th><th>Valor</th></tr>
+      <tr><td class="l">+45</td><td class="mono">0010 1101</td></tr>
+      <tr><td class="l">Complemento a uno (invertir)</td><td class="mono">1101 0010</td></tr>
+      <tr><td class="l">+1 → C2(45) = −45</td><td class="mono">1101 0011</td></tr>
+      <tr><td class="l">+60</td><td class="mono">0011 1100</td></tr>
+      <tr><td class="l">60 + (−45)</td><td class="mono">1 0000 1111</td></tr>
+      <tr class="hl"><td class="l">Se descarta el acarreo final</td><td class="mono"><b>0000 1111 = 15</b> <span class="chk">✓</span></td></tr>
+    </table>
+    <div class="box warn"><b>Desbordamiento (overflow)</b>
+    Ocurre cuando se suman dos números del mismo signo y el resultado sale con el signo contrario. Ejemplo: 100 + 50 → <span class="mono">0110 0100 + 0011 0010 = 1001 0110</span>, que en C2 se lee como negativo. 150 no cabe en el rango de 8 bits con signo.</div>
+  </div>
+
+  <h3>1.3 Códigos binarios</h3>
+  <table>
+    <tr><th>Código</th><th class="l">Idea</th><th class="l">Ejemplo</th></tr>
+    <tr><td>BCD 8421</td><td class="l">Cada dígito decimal se codifica con 4 bits. Las combinaciones 1010–1111 no se usan.</td><td class="l mono">157 → 0001 0101 0111</td></tr>
+    <tr><td>Gray</td><td class="l">Dos valores consecutivos difieren en un solo bit (útil en encoders y en el orden de los K-maps).<br>g<sub>n−1</sub> = b<sub>n−1</sub>, g<sub>i</sub> = b<sub>i+1</sub> ⊕ b<sub>i</sub></td><td class="l mono">1011₂ → 1110 Gray<br>1110 Gray → 1011₂</td></tr>
+    <tr><td>ASCII</td><td class="l">7 bits por carácter. Una mayúscula y su minúscula difieren solo en el bit 5 (0x20).</td><td class="l mono">'A' = 65 = 0x41 = 100 0001<br>'a' = 0x61 · '0' = 0x30</td></tr>
+  </table>
+
+  <h3>1.4 Las siete compuertas lógicas</h3>
+  <div class="grid3 gates">
+    <figure><img src="img/s1_and.svg" alt="AND"><figcaption><b>AND</b> · Y = A·B · 74LS08</figcaption></figure>
+    <figure><img src="img/s1_or.svg" alt="OR"><figcaption><b>OR</b> · Y = A+B · 74LS32</figcaption></figure>
+    <figure><img src="img/s1_not.svg" alt="NOT"><figcaption><b>NOT</b> · Y = <span class="ov">A</span> · 74LS04</figcaption></figure>
+    <figure><img src="img/s1_nand.svg" alt="NAND"><figcaption><b>NAND</b> · Y = <span class="ov">A·B</span> · 74LS00</figcaption></figure>
+    <figure><img src="img/s1_nor.svg" alt="NOR"><figcaption><b>NOR</b> · Y = <span class="ov">A+B</span> · 74LS02</figcaption></figure>
+    <figure><img src="img/s1_xor.svg" alt="XOR"><figcaption><b>XOR</b> · Y = A⊕B · 74LS86</figcaption></figure>
+    <figure><img src="img/s1_xnor.svg" alt="XNOR"><figcaption><b>XNOR</b> · Y = <span class="ov">A⊕B</span> · 74LS266*</figcaption></figure>
+  </div>
+  <p style="font-size:13px;color:var(--muted)">* El 74LS266 tiene salidas de colector abierto: necesita una resistencia de <i>pull-up</i> en cada salida.</p>
+
+  <div class="solved">
+    <div class="ttl">Circuito resuelto · Tabla de verdad comprobada de las compuertas de dos entradas (APE 01)</div>
+    <table>
+      <tr><th>A</th><th>B</th><th>AND</th><th>OR</th><th>NAND</th><th>NOR</th><th>XOR</th><th>XNOR</th><th>NOT A</th></tr>
+      <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+      <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+      <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+    </table>
+    <p><b>Lectura de la hoja de datos (familia 74LS):</b> encapsulado DIP-14, V<sub>CC</sub> = +5 V en el pin 14 y GND en el pin 7. El 74LS00, 08, 32 y 86 traen 4 compuertas de 2 entradas; el 74LS04 trae 6 inversores; el 74LS02 tiene el pinout invertido (salida en los pines 1, 4, 10 y 13). En Logisim cada compuerta se verificó con dos interruptores en las entradas y una sonda o LED en la salida, recorriendo las 4 combinaciones.</p>
+  </div>
+</section>
+
+<!-- ============================================================ SEMANA 2 -->
+<section class="week" id="s2">
+  <span class="tag">Semana 2</span>
+  <h2>Álgebra de Boole y formas canónicas</h2>
+  <p class="lead">Un circuito y una expresión booleana son lo mismo escrito de dos maneras. Simplificar la expresión equivale a ahorrar compuertas.</p>
+
+  <h3>2.1 Postulados y teoremas</h3>
+  <table>
+    <tr><th class="l">Ley</th><th>Forma OR</th><th>Forma AND (dual)</th></tr>
+    <tr><td class="l">Identidad</td><td>A + 0 = A</td><td>A · 1 = A</td></tr>
+    <tr><td class="l">Nulo / dominación</td><td>A + 1 = 1</td><td>A · 0 = 0</td></tr>
+    <tr><td class="l">Idempotencia</td><td>A + A = A</td><td>A · A = A</td></tr>
+    <tr><td class="l">Complemento</td><td>A + <span class="ov">A</span> = 1</td><td>A · <span class="ov">A</span> = 0</td></tr>
+    <tr><td class="l">Involución</td><td colspan="2"><span class="ov"><span class="ov">A</span></span> = A</td></tr>
+    <tr><td class="l">Conmutativa</td><td>A + B = B + A</td><td>AB = BA</td></tr>
+    <tr><td class="l">Asociativa</td><td>A + (B + C) = (A + B) + C</td><td>A(BC) = (AB)C</td></tr>
+    <tr><td class="l">Distributiva</td><td>A(B + C) = AB + AC</td><td>A + BC = (A + B)(A + C)</td></tr>
+    <tr><td class="l">Absorción</td><td>A + AB = A</td><td>A(A + B) = A</td></tr>
+    <tr><td class="l">Absorción del complemento</td><td>A + <span class="ov">A</span>B = A + B</td><td>A(<span class="ov">A</span> + B) = AB</td></tr>
+    <tr><td class="l">Consenso</td><td>AB + <span class="ov">A</span>C + BC = AB + <span class="ov">A</span>C</td><td>—</td></tr>
+    <tr class="hl"><td class="l"><b>De Morgan</b></td><td><span class="ov">A + B</span> = <span class="ov">A</span> · <span class="ov">B</span></td><td><span class="ov">A · B</span> = <span class="ov">A</span> + <span class="ov">B</span></td></tr>
+  </table>
+  <div class="box"><b>Regla práctica de De Morgan</b>«Se rompe la barra y se cambia el signo»: la barra larga se divide en barras individuales y el · pasa a + (o al revés).</div>
+
+  <h3>2.2 Minitérminos, maxitérminos y formas canónicas</h3>
+  <ul>
+    <li><b>Minitérmino m<sub>i</sub>:</b> producto (AND) de todas las variables que vale 1 solo en la fila <i>i</i>. Una variable que vale 0 en esa fila va negada.</li>
+    <li><b>Maxitérmino M<sub>i</sub>:</b> suma (OR) de todas las variables que vale 0 solo en la fila <i>i</i>. Una variable que vale 1 en esa fila va negada.</li>
+    <li><b>Suma de productos (SdP) canónica:</b> F = Σm(filas donde F = 1).</li>
+    <li><b>Producto de sumas (PdS) canónico:</b> F = ΠM(filas donde F = 0).</li>
+    <li><b>¿Cuál conviene?</b> La que tenga menos términos: SdP si hay pocos unos, PdS si hay pocos ceros.</li>
+  </ul>
+
+  <div class="solved">
+    <div class="ttl">Circuito resuelto · Sistema de alarma de tres sensores (APE 02)</div>
+    <p><b>Requerimiento:</b> una bodega tiene tres sensores: A (puerta), B (ventana) y C (movimiento). Para evitar falsas alarmas, la sirena debe activarse solo cuando <b>al menos dos</b> sensores detectan intrusión.</p>
+    <div class="grid2">
+      <div>
+        <h4>Paso 1 · Tabla de verdad</h4>
+        <table>
+          <tr><th>Fila</th><th>A</th><th>B</th><th>C</th><th>Alarma</th><th>Término</th></tr>
+          <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>M₀</td></tr>
+          <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>0</td><td>M₁</td></tr>
+          <tr><td>2</td><td>0</td><td>1</td><td>0</td><td>0</td><td>M₂</td></tr>
+          <tr class="hl"><td>3</td><td>0</td><td>1</td><td>1</td><td>1</td><td>m₃</td></tr>
+          <tr><td>4</td><td>1</td><td>0</td><td>0</td><td>0</td><td>M₄</td></tr>
+          <tr class="hl"><td>5</td><td>1</td><td>0</td><td>1</td><td>1</td><td>m₅</td></tr>
+          <tr class="hl"><td>6</td><td>1</td><td>1</td><td>0</td><td>1</td><td>m₆</td></tr>
+          <tr class="hl"><td>7</td><td>1</td><td>1</td><td>1</td><td>1</td><td>m₇</td></tr>
+        </table>
+      </div>
+      <div>
+        <h4>Paso 2 · Formas canónicas</h4>
+        <p><b>SdP:</b> Alarma = Σm(3, 5, 6, 7)</p>
+        <p class="eq"><span class="ov">A</span>BC + A<span class="ov">B</span>C + AB<span class="ov">C</span> + ABC</p>
+        <p><b>PdS:</b> Alarma = ΠM(0, 1, 2, 4)</p>
+        <p class="eq" style="font-size:16px">(A+B+C)(A+B+<span class="ov">C</span>)(A+<span class="ov">B</span>+C)(<span class="ov">A</span>+B+C)</p>
+        <h4>Paso 3 · Simplificación algebraica</h4>
+        <p>Por idempotencia, ABC = ABC + ABC + ABC. Se reparte una copia a cada término:</p>
+        <ol class="steps" style="font-size:15px">
+          <li>(<span class="ov">A</span>BC + ABC) + (A<span class="ov">B</span>C + ABC) + (AB<span class="ov">C</span> + ABC)</li>
+          <li>BC(<span class="ov">A</span> + A) + AC(<span class="ov">B</span> + B) + AB(<span class="ov">C</span> + C)</li>
+          <li>BC·1 + AC·1 + AB·1</li>
+        </ol>
+        <p class="eq"><b>Alarma = AB + AC + BC</b></p>
+      </div>
+    </div>
+    <h4>Paso 4 · Esquemas</h4>
+    <div class="grid2">
+      <figure><img src="img/s2_alarma_canonica.svg" alt="Alarma forma canónica" style="max-height:420px"><figcaption>Forma canónica SdP: 3 NOT, 4 AND de 3 entradas y 1 OR de 4 entradas.</figcaption></figure>
+      <figure><img src="img/s2_alarma_simplificada.svg" alt="Alarma simplificada" style="max-height:260px"><figcaption>Forma simplificada: 3 AND de 2 entradas y 1 OR de 3 entradas.</figcaption></figure>
+    </div>
+    <h4>Paso 5 · Recuento de compuertas y CI</h4>
+    <table>
+      <tr><th class="l">Versión</th><th>Compuertas</th><th class="l">Circuitos integrados</th><th>N.º de CI</th></tr>
+      <tr><td class="l">Canónica</td><td>8</td><td class="l">74LS04 (3 NOT) + 2×74LS11 (4 AND-3) + 74LS32 (OR-4 en cascada: 3 OR-2)</td><td>4</td></tr>
+      <tr class="hl"><td class="l">Simplificada</td><td>4</td><td class="l">74LS08 (3 AND-2) + 74LS32 (OR-3 en cascada: 2 OR-2)</td><td><b>2</b></td></tr>
+    </table>
+    <div class="box ok"><b>Verificación</b>Ambas versiones producen la misma columna de salida en las 8 combinaciones. Se comprobó por simulación y por fuerza bruta con <span class="mono">scripts/generar_figuras.py</span>. Ahorro: 50 % de compuertas y 2 CI menos.</div>
+  </div>
+</section>
+
+<!-- ============================================================ SEMANA 3 -->
+<section class="week" id="s3">
+  <span class="tag">Semana 3</span>
+  <h2>Mapas de Karnaugh y universalidad de NAND/NOR</h2>
+  <p class="lead">El problema de la simplificación algebraica es que no indica cuándo se llegó a la expresión mínima. El mapa de Karnaugh ordena la tabla de verdad de forma que la simplificación se ve geométricamente.</p>
+
+  <h3>3.1 Reglas del mapa de Karnaugh</h3>
+  <ol class="steps">
+    <li>Las filas y columnas van en <b>código Gray</b> (00, 01, 11, 10), de modo que las celdas vecinas difieren en una sola variable. Los bordes opuestos también son vecinos.</li>
+    <li>Se agrupan los <b>unos</b> (para SdP) o los <b>ceros</b> (para PdS) en rectángulos de 1, 2, 4, 8… celdas (potencias de 2).</li>
+    <li>Los grupos deben ser <b>lo más grandes posible</b> y hay que usar <b>la menor cantidad</b> de grupos que cubran todos los unos.</li>
+    <li>De cada grupo se conservan solo las variables que <b>no cambian</b> dentro de él.</li>
+    <li>Las <b>condiciones indiferentes (X)</b> se toman como 1 si ayudan a agrandar un grupo; si no ayudan, se dejan fuera.</li>
+  </ol>
+
+  <div class="solved">
+    <div class="ttl">Ejemplo resuelto · Tres variables, contraste con el método algebraico</div>
+    <div class="grid2">
+      <figure><img src="img/s3_kmap3.svg" alt="K-map de 3 variables"><figcaption>F(A,B,C) = Σm(0,2,4,5,6)</figcaption></figure>
+      <div>
+        <p><span style="color:#1f5fbf;font-weight:700">Grupo azul</span> (fila C = 0, 4 celdas): <span class="ov">C</span></p>
+        <p><span style="color:#c0392b;font-weight:700">Grupo rojo</span> (columna AB = 10): A<span class="ov">B</span></p>
+        <p class="eq"><b>F = <span class="ov">C</span> + A<span class="ov">B</span></b></p>
+        <p><b>Por álgebra:</b> <span class="ov">C</span>(<span class="ov">A</span><span class="ov">B</span> + <span class="ov">A</span>B + A<span class="ov">B</span> + AB) + A<span class="ov">B</span>C = <span class="ov">C</span> + A<span class="ov">B</span>C = <span class="ov">C</span> + A<span class="ov">B</span>. Para llegar al mismo resultado hay que darse cuenta de que se puede aplicar la absorción del complemento; el mapa lo muestra directamente.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>3.2 Universalidad de NAND y NOR</h3>
+  <p>Cualquier función se puede construir solo con NAND o solo con NOR, porque con cada una se obtienen NOT, AND y OR:</p>
+  <table>
+    <tr><th>Función</th><th>Solo NAND</th><th>Solo NOR</th></tr>
+    <tr><td>NOT A</td><td>NAND(A, A)</td><td>NOR(A, A)</td></tr>
+    <tr><td>A · B</td><td>NAND(NAND(A,B), NAND(A,B))</td><td>NOR(<span class="ov">A</span>, <span class="ov">B</span>)</td></tr>
+    <tr><td>A + B</td><td>NAND(<span class="ov">A</span>, <span class="ov">B</span>)</td><td>NOR(NOR(A,B), NOR(A,B))</td></tr>
+  </table>
+  <div class="box"><b>Conversión rápida</b>Un circuito AND-OR de dos niveles (SdP) pasa a NAND-NAND cambiando todas las compuertas por NAND. Un circuito OR-AND (PdS) pasa a NOR-NOR. Esto se justifica aplicando De Morgan dos veces.</div>
+
+  <div class="solved">
+    <div class="ttl">Circuito resuelto · Cuatro variables con condiciones indiferentes, implementado solo con NAND (APE 03)</div>
+    <p><b>Función:</b> F(A,B,C,D) = Σm(1, 3, 7, 11, 15) + d(0, 2, 5)</p>
+    <div class="grid2">
+      <figure><img src="img/s3_kmap4.svg" alt="K-map de 4 variables"><figcaption>Rojo: fila CD = 11 → CD · Azul: columna AB = 00 → <span class="ov">A</span><span class="ov">B</span> (usa d0 y d2)</figcaption></figure>
+      <div>
+        <p><span style="color:#c0392b;font-weight:700">Grupo rojo</span> (m3, m7, m11, m15): A y B cambian; C = 1 y D = 1 → <b>CD</b></p>
+        <p><span style="color:#1f5fbf;font-weight:700">Grupo azul</span> (d0, m1, d2, m3): C y D cambian; A = 0 y B = 0 → <b><span class="ov">A</span><span class="ov">B</span></b></p>
+        <p>La indiferente d5 no ayuda a formar un grupo más grande, así que se toma como 0.</p>
+        <p class="eq"><b>F = <span class="ov">A</span><span class="ov">B</span> + CD</b></p>
+        <p style="font-size:14px">En PdS el resultado mínimo es (<span class="ov">A</span>+C)(<span class="ov">A</span>+D)(<span class="ov">B</span>+C)(<span class="ov">B</span>+D), con 4 términos en vez de 2, así que conviene la SdP.</p>
+      </div>
+    </div>
+    <h4>Paso a NAND-NAND</h4>
+    <p class="eq">F = <span class="ov"><span class="ov">(<span class="ov">A</span><span class="ov">B</span>)</span> · <span class="ov">(CD)</span></span> = NAND( NAND(<span class="ov">A</span>, <span class="ov">B</span>), NAND(C, D) )</p>
+    <div class="grid2">
+      <figure><img src="img/s3_and_or.svg" alt="AND-OR"><figcaption>Versión AND-OR: 2 NOT + 2 AND + 1 OR → 74LS04 + 74LS08 + 74LS32 = 3 CI</figcaption></figure>
+      <figure><img src="img/s3_solo_nand.svg" alt="Solo NAND"><figcaption>Versión solo NAND: 5 NAND (los inversores son NAND con las entradas unidas) → 2×74LS00 = 2 CI</figcaption></figure>
+    </div>
+    <table>
+      <tr><th class="l">Versión</th><th>Compuertas</th><th>N.º de CI</th></tr>
+      <tr><td class="l">Canónica sin minimizar (5 minitérminos)</td><td>4 NOT + 5 AND-4 + 1 OR-5</td><td>≥ 6</td></tr>
+      <tr><td class="l">Mínima AND-OR</td><td>5</td><td>3</td></tr>
+      <tr class="hl"><td class="l">Mínima solo NAND</td><td>5</td><td><b>2</b> (3 compuertas libres)</td></tr>
+    </table>
+    <div class="box ok"><b>Verificación</b>La versión solo NAND coincide con la AND-OR en las 16 combinaciones, y la expresión mínima respeta todos los 1 y 0 especificados. Las X pueden salir con cualquier valor.</div>
+  </div>
+</section>
+
+<!-- ============================================================ SEMANA 4 -->
+<section class="week" id="s4">
+  <span class="tag">Semana 4</span>
+  <h2>Bloques combinacionales aritméticos</h2>
+  <p class="lead">Un circuito sin memoria puede sumar. El problema central de todo sumador es el acarreo. Estos bloques forman la base de la unidad aritmético-lógica (ALU) de un procesador.</p>
+
+  <h3>4.1 Semisumador (half adder)</h3>
+  <div class="grid2">
+    <table>
+      <tr><th>A</th><th>B</th><th>C (acarreo)</th><th>S (suma)</th></tr>
+      <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+      <tr><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+      <tr><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+      <tr><td>1</td><td>1</td><td>1</td><td>0</td></tr>
+    </table>
+    <div>
+      <p class="eq">S = A ⊕ B &nbsp;&nbsp;&nbsp; C = A · B</p>
+      <div class="grid2"><figure><img src="img/s4_ha_suma.svg" alt="HA suma"></figure><figure><img src="img/s4_ha_acarreo.svg" alt="HA acarreo"></figure></div>
+      <p style="font-size:14px">No tiene entrada de acarreo, así que solo sirve para el bit menos significativo.</p>
+    </div>
+  </div>
+
+  <div class="solved">
+    <div class="ttl">Circuito resuelto · Sumador completo desde su tabla de verdad (APE 04)</div>
+    <div class="grid2">
+      <table>
+        <tr><th>A</th><th>B</th><th>C<sub>in</sub></th><th>C<sub>out</sub></th><th>S</th></tr>
+        <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+        <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+        <tr><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td></tr>
+        <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+        <tr><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+        <tr><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+        <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+      </table>
+      <div>
+        <p><b>Suma:</b> S = Σm(1,2,4,7). En el mapa forma un tablero de ajedrez y no admite agrupación, lo que delata una XOR:</p>
+        <p class="eq">S = A ⊕ B ⊕ C<sub>in</sub></p>
+        <p><b>Acarreo:</b> C<sub>out</sub> = Σm(3,5,6,7). Es la <b>misma función de mayoría</b> que la alarma de la semana 2:</p>
+        <figure style="margin:6px 0"><img src="img/s4_kmap_cout.svg" alt="K-map Cout" style="max-width:300px"></figure>
+      </div>
+    </div>
+    <p class="eq">C<sub>out</sub> = AB + AC<sub>in</sub> + BC<sub>in</sub> &nbsp;=&nbsp; AB + C<sub>in</sub>(A ⊕ B)</p>
+    <p>Se prefiere la segunda forma porque reutiliza la XOR A ⊕ B que ya existe para la suma. Así, el sumador completo equivale a <b>dos semisumadores y una OR</b>.</p>
+    <div class="grid2">
+      <figure><img src="img/s4_fa_suma.svg" alt="FA suma"><figcaption>Salida S</figcaption></figure>
+      <figure><img src="img/s4_fa_acarreo.svg" alt="FA acarreo"><figcaption>Salida C<sub>out</sub> (la XOR se comparte con S)</figcaption></figure>
+    </div>
+  </div>
+
+  <h3>4.2 Sumador paralelo de 4 bits (acarreo en cascada)</h3>
+  <figure>
+  <svg viewBox="0 0 780 215" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="14">
+    <defs><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1d2430"/></marker></defs>
+    <g fill="#e8f0fc" stroke="#1d2430" stroke-width="1.6">
+      <rect x="80" y="70" width="120" height="70" rx="8"/><rect x="250" y="70" width="120" height="70" rx="8"/>
+      <rect x="420" y="70" width="120" height="70" rx="8"/><rect x="590" y="70" width="120" height="70" rx="8"/>
+    </g>
+    <g text-anchor="middle" font-weight="700"><text x="140" y="110">FA₃</text><text x="310" y="110">FA₂</text><text x="480" y="110">FA₁</text><text x="650" y="110">FA₀</text></g>
+    <g stroke="#1d2430" stroke-width="1.5" marker-end="url(#a2)">
+      <line x1="115" y1="30" x2="115" y2="68"/><line x1="165" y1="30" x2="165" y2="68"/>
+      <line x1="285" y1="30" x2="285" y2="68"/><line x1="335" y1="30" x2="335" y2="68"/>
+      <line x1="455" y1="30" x2="455" y2="68"/><line x1="505" y1="30" x2="505" y2="68"/>
+      <line x1="625" y1="30" x2="625" y2="68"/><line x1="675" y1="30" x2="675" y2="68"/>
+      <line x1="140" y1="140" x2="140" y2="175"/><line x1="310" y1="140" x2="310" y2="175"/>
+      <line x1="480" y1="140" x2="480" y2="175"/><line x1="650" y1="140" x2="650" y2="175"/>
+      <line x1="250" y1="105" x2="202" y2="105"/><line x1="420" y1="105" x2="372" y2="105"/>
+      <line x1="590" y1="105" x2="542" y2="105"/><line x1="760" y1="105" x2="712" y2="105"/>
+      <line x1="80" y1="105" x2="32" y2="105"/>
+    </g>
+    <g text-anchor="middle">
+      <text x="115" y="24">A₃</text><text x="165" y="24">B₃</text><text x="285" y="24">A₂</text><text x="335" y="24">B₂</text>
+      <text x="455" y="24">A₁</text><text x="505" y="24">B₁</text><text x="625" y="24">A₀</text><text x="675" y="24">B₀</text>
+      <text x="140" y="195">S₃</text><text x="310" y="195">S₂</text><text x="480" y="195">S₁</text><text x="650" y="195">S₀</text>
+      <text x="226" y="98" font-size="12">C₃</text><text x="396" y="98" font-size="12">C₂</text><text x="566" y="98" font-size="12">C₁</text>
+      <text x="740" y="98" font-size="12">C₀=0</text><text x="22" y="98" font-size="12">C₄</text>
+    </g>
+  </svg>
+  <figcaption>El acarreo se propaga de derecha a izquierda: cada etapa espera a la anterior. Versión integrada: 74LS283, que usa acarreo anticipado.</figcaption>
+  </figure>
+
+  <div class="solved">
+    <div class="ttl">Traza · 0110 (6) + 0111 (7)</div>
+    <table>
+      <tr><th>Bit</th><th>A<sub>i</sub></th><th>B<sub>i</sub></th><th>C<sub>i</sub> (entra)</th><th>S<sub>i</sub></th><th>C<sub>i+1</sub> (sale)</th></tr>
+      <tr><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+      <tr><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+      <tr><td>2</td><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+      <tr><td>3</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+    </table>
+    <p>Resultado: C₄ = 0, S = <b>1101 = 13</b> <span class="chk">✓</span></p>
+    <p><b>Estimación del retardo:</b> si cada compuerta tarda t<sub>p</sub>, la primera etapa produce su acarreo en 3 niveles (XOR → AND → OR) y cada etapa siguiente añade 2 niveles (AND → OR). Para 4 bits: 3 + 2·3 = <b>9 t<sub>p</sub></b>. Con un valor de referencia de t<sub>p</sub> ≈ 10 ns para 74LS, C₄ queda estable después de unos 90 ns. El retardo crece linealmente con el número de bits, y por eso existe el acarreo anticipado (<i>carry look-ahead</i>).</p>
+  </div>
+
+  <h3>4.3 Resta por complemento a dos: sumador/restador</h3>
+  <p>Como A − B = A + <span class="ov">B</span> + 1, basta con una XOR por bit controlada por una señal M. Con M = 0 se tiene B ⊕ 0 = B y C₀ = 0, es decir, una <b>suma</b>. Con M = 1 se tiene B ⊕ 1 = <span class="ov">B</span> y C₀ = 1, es decir, una <b>resta</b>.</p>
+  <figure>
+  <svg viewBox="0 0 800 250" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="14">
+    <defs><marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#1d2430"/></marker></defs>
+    <g stroke="#c0392b" stroke-width="1.6" fill="none">
+      <polyline points="785,48 165,48"/>
+      <line x1="157" y1="48" x2="157" y2="70"/><line x1="327" y1="48" x2="327" y2="70"/>
+      <line x1="497" y1="48" x2="497" y2="70"/><line x1="667" y1="48" x2="667" y2="70"/>
+      <polyline points="785,48 785,145 762,145"/>
+    </g>
+    <g fill="#c0392b"><circle cx="157" cy="48" r="3.5"/><circle cx="327" cy="48" r="3.5"/><circle cx="497" cy="48" r="3.5"/><circle cx="667" cy="48" r="3.5"/></g>
+    <g fill="#fdecea" stroke="#c0392b" stroke-width="1.5">
+      <rect x="150" y="70" width="32" height="26" rx="5"/><rect x="320" y="70" width="32" height="26" rx="5"/>
+      <rect x="490" y="70" width="32" height="26" rx="5"/><rect x="660" y="70" width="32" height="26" rx="5"/>
+    </g>
+    <g text-anchor="middle" fill="#c0392b" font-weight="700"><text x="166" y="88">⊕</text><text x="336" y="88">⊕</text><text x="506" y="88">⊕</text><text x="676" y="88">⊕</text></g>
+    <g fill="#e8f0fc" stroke="#1d2430" stroke-width="1.6">
+      <rect x="80" y="110" width="120" height="70" rx="8"/><rect x="250" y="110" width="120" height="70" rx="8"/>
+      <rect x="420" y="110" width="120" height="70" rx="8"/><rect x="590" y="110" width="120" height="70" rx="8"/>
+    </g>
+    <g text-anchor="middle" font-weight="700"><text x="140" y="150">FA₃</text><text x="310" y="150">FA₂</text><text x="480" y="150">FA₁</text><text x="650" y="150">FA₀</text></g>
+    <g stroke="#1d2430" stroke-width="1.5" marker-end="url(#a3)">
+      <line x1="110" y1="22" x2="110" y2="108"/><line x1="280" y1="22" x2="280" y2="108"/>
+      <line x1="450" y1="22" x2="450" y2="108"/><line x1="620" y1="22" x2="620" y2="108"/>
+      <line x1="175" y1="22" x2="175" y2="68"/><line x1="345" y1="22" x2="345" y2="68"/>
+      <line x1="515" y1="22" x2="515" y2="68"/><line x1="685" y1="22" x2="685" y2="68"/>
+      <line x1="166" y1="96" x2="166" y2="108"/><line x1="336" y1="96" x2="336" y2="108"/>
+      <line x1="506" y1="96" x2="506" y2="108"/><line x1="676" y1="96" x2="676" y2="108"/>
+      <line x1="140" y1="180" x2="140" y2="212"/><line x1="310" y1="180" x2="310" y2="212"/>
+      <line x1="480" y1="180" x2="480" y2="212"/><line x1="650" y1="180" x2="650" y2="212"/>
+      <line x1="250" y1="145" x2="202" y2="145"/><line x1="420" y1="145" x2="372" y2="145"/>
+      <line x1="590" y1="145" x2="542" y2="145"/><line x1="762" y1="145" x2="712" y2="145"/>
+      <line x1="80" y1="145" x2="32" y2="145"/>
+    </g>
+    <g text-anchor="middle">
+      <text x="110" y="16">A₃</text><text x="175" y="16">B₃</text><text x="280" y="16">A₂</text><text x="345" y="16">B₂</text>
+      <text x="450" y="16">A₁</text><text x="515" y="16">B₁</text><text x="620" y="16">A₀</text><text x="685" y="16">B₀</text>
+      <text x="140" y="232">S₃</text><text x="310" y="232">S₂</text><text x="480" y="232">S₁</text><text x="650" y="232">S₀</text>
+      <text x="22" y="138" font-size="12">C₄</text><text x="745" y="138" font-size="12" fill="#c0392b">C₀ = M</text>
+      <text x="770" y="40" font-size="13" fill="#c0392b" font-weight="700">M</text>
+    </g>
+  </svg>
+  <figcaption>Sumador/restador de 4 bits: M = 0 suma y M = 1 resta.</figcaption>
+  </figure>
+  <div class="solved">
+    <div class="ttl">Traza · 0111 (7) − 0011 (3) con M = 1</div>
+    <p>B ⊕ M = 1100, C₀ = 1 → 0111 + 1100 + 1 = <span class="mono">1 0100</span> → se descarta C₄ → <b>0100 = 4</b> <span class="chk">✓</span></p>
+  </div>
+
+  <h3>4.4 Comparador de magnitud</h3>
+  <p>Para 1 bit: (A = B) = <span class="ov">A ⊕ B</span> (XNOR), (A &gt; B) = A<span class="ov">B</span>, (A &lt; B) = <span class="ov">A</span>B.</p>
+  <p>Para 2 bits, con x<sub>i</sub> = <span class="ov">A<sub>i</sub> ⊕ B<sub>i</sub></span>:</p>
+  <div class="grid2">
+    <div>
+      <p class="eq" style="font-size:16px">(A = B) = x₁ · x₀</p>
+      <p class="eq" style="font-size:16px">(A &gt; B) = A₁<span class="ov">B₁</span> + x₁ A₀<span class="ov">B₀</span></p>
+      <p class="eq" style="font-size:16px">(A &lt; B) = <span class="ov">A₁</span>B₁ + x₁ <span class="ov">A₀</span>B₀</p>
+      <p style="font-size:14px">Se compara desde el bit más significativo y solo se mira el siguiente bit si los anteriores son iguales. Versión integrada: 74LS85 (4 bits, conectable en cascada).</p>
+    </div>
+    <figure><img src="img/s4_comparador_igual.svg" alt="Comparador igualdad"><figcaption>Salida A = B del comparador de 2 bits</figcaption></figure>
+  </div>
+</section>
+
+<!-- ============================================================ SEMANA 5 -->
+<section class="week" id="s5">
+  <span class="tag">Semana 5</span>
+  <h2>Selección y codificación de datos</h2>
+  <p class="lead">Un sistema digital necesita encaminar datos entre varias fuentes y destinos (MUX/DEMUX) y convertir entre representaciones de la misma información (codificador/decodificador).</p>
+
+  <h3>5.1 Resumen de bloques</h3>
+  <table>
+    <tr><th class="l">Bloque</th><th class="l">Qué hace</th><th class="l">Ecuación / característica</th><th>CI 74LS</th></tr>
+    <tr><td class="l">MUX 2<sup>n</sup>:1</td><td class="l">Elige 1 de 2<sup>n</sup> entradas según n líneas de selección</td><td class="l">4:1 → Y = <span class="ov">S₁</span><span class="ov">S₀</span>I₀ + <span class="ov">S₁</span>S₀I₁ + S₁<span class="ov">S₀</span>I₂ + S₁S₀I₃</td><td>151 (8:1), 153 (2×4:1), 157 (4×2:1)</td></tr>
+    <tr><td class="l">DEMUX 1:2<sup>n</sup></td><td class="l">Envía una entrada a 1 de 2<sup>n</sup> salidas (operación dual del MUX)</td><td class="l">Y<sub>i</sub> = D · m<sub>i</sub>(S)</td><td>155, 138</td></tr>
+    <tr><td class="l">Decodificador n:2<sup>n</sup></td><td class="l">Activa la salida cuyo índice coincide con la entrada</td><td class="l">Cada salida es un <b>minitérmino</b></td><td>138 (3:8, salidas activas en bajo)</td></tr>
+    <tr><td class="l">Codificador 2<sup>n</sup>:n</td><td class="l">Devuelve el código de la entrada activa</td><td class="l">Con prioridad: gana la de mayor índice</td><td>148 (8:3 con prioridad)</td></tr>
+    <tr><td class="l">Decodificador BCD → 7 seg.</td><td class="l">Convierte un dígito BCD en los segmentos a–g</td><td class="l">10 combinaciones válidas, 6 indiferentes</td><td>48 (cátodo común), 47 (ánodo común)</td></tr>
+  </table>
+  <div class="box"><b>Expansión</b>Dos MUX 4:1 más un MUX 2:1 forman un MUX 8:1. Dos decodificadores 2:4 se combinan en uno 3:8 usando el bit más significativo en las entradas de habilitación.</div>
+
+  <div class="solved">
+    <div class="ttl">Circuito resuelto · F(A,B,C) = Σm(1, 2, 4, 7) con un MUX de 8 canales (APE 05)</div>
+    <p>Las variables van a las líneas de selección (A = S₂, B = S₁, C = S₀). En cada entrada I<sub>i</sub> se pone el valor de F en la fila <i>i</i>. <b>No hace falta minimizar.</b></p>
+    <div class="grid2">
+      <figure>
+      <svg viewBox="0 0 330 300" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="14">
+        <polygon points="120,20 230,60 230,240 120,280" fill="#e8f0fc" stroke="#1d2430" stroke-width="1.8"/>
+        <text x="175" y="155" text-anchor="middle" font-weight="700">MUX</text><text x="175" y="173" text-anchor="middle" font-size="12">8:1</text>
+        <g stroke="#1d2430" stroke-width="1.5">
+          <line x1="70" y1="45" x2="120" y2="45"/><line x1="70" y1="75" x2="120" y2="75"/><line x1="70" y1="105" x2="120" y2="105"/><line x1="70" y1="135" x2="120" y2="135"/>
+          <line x1="70" y1="165" x2="120" y2="165"/><line x1="70" y1="195" x2="120" y2="195"/><line x1="70" y1="225" x2="120" y2="225"/><line x1="70" y1="255" x2="120" y2="255"/>
+          <line x1="230" y1="150" x2="290" y2="150"/>
+          <line x1="155" y1="268" x2="155" y2="295"/><line x1="175" y1="261" x2="175" y2="295"/><line x1="195" y1="254" x2="195" y2="295"/>
+        </g>
+        <g font-size="12" fill="#5b6575"><text x="124" y="49">I0</text><text x="124" y="79">I1</text><text x="124" y="109">I2</text><text x="124" y="139">I3</text><text x="124" y="169">I4</text><text x="124" y="199">I5</text><text x="124" y="229">I6</text><text x="124" y="259">I7</text></g>
+        <g text-anchor="end" font-weight="700"><text x="64" y="50">0</text><text x="64" y="80" fill="#c0392b">1</text><text x="64" y="110" fill="#c0392b">1</text><text x="64" y="140">0</text>
+          <text x="64" y="170" fill="#c0392b">1</text><text x="64" y="200">0</text><text x="64" y="230">0</text><text x="64" y="260" fill="#c0392b">1</text></g>
+        <text x="296" y="155" font-weight="700">F</text>
+        <g font-size="12" text-anchor="middle"><text x="148" y="292">A</text><text x="168" y="292">B</text><text x="188" y="292">C</text></g>
+      </svg>
+      <figcaption>Entradas fijadas a 0 o 1 según la tabla de verdad (74LS151)</figcaption>
+      </figure>
+      <div>
+        <table>
+          <tr><th>A</th><th>B</th><th>C</th><th>F</th></tr>
+          <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr class="hl"><td>0</td><td>0</td><td>1</td><td>1</td></tr>
+          <tr class="hl"><td>0</td><td>1</td><td>0</td><td>1</td></tr><tr><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+          <tr class="hl"><td>1</td><td>0</td><td>0</td><td>1</td></tr><tr><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+          <tr><td>1</td><td>1</td><td>0</td><td>0</td></tr><tr class="hl"><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+        </table>
+        <p style="font-size:14px">Esta F es A ⊕ B ⊕ C (impar de unos). Su mapa de Karnaugh es un tablero de ajedrez sin grupos posibles, el peor caso para compuertas AND-OR y el mejor caso para usar un MUX.</p>
+      </div>
+    </div>
+    <h4>Variante con MUX 4:1 (A y B en selección, C como dato)</h4>
+    <table>
+      <tr><th>A B</th><th>F con C = 0</th><th>F con C = 1</th><th>Entrada I<sub>i</sub></th></tr>
+      <tr><td>00 → I₀</td><td>0</td><td>1</td><td><b>C</b></td></tr>
+      <tr><td>01 → I₁</td><td>1</td><td>0</td><td><b><span class="ov">C</span></b></td></tr>
+      <tr><td>10 → I₂</td><td>1</td><td>0</td><td><b><span class="ov">C</span></b></td></tr>
+      <tr><td>11 → I₃</td><td>0</td><td>1</td><td><b>C</b></td></tr>
+    </table>
+    <table>
+      <tr><th class="l">Solución</th><th class="l">Componentes</th><th class="l">Observación</th></tr>
+      <tr><td class="l">Compuertas</td><td class="l">2 XOR (1×74LS86)</td><td class="l">Requiere reconocer el patrón XOR</td></tr>
+      <tr><td class="l">MUX 8:1</td><td class="l">1×74LS151</td><td class="l">Directo desde la tabla, sin minimizar</td></tr>
+      <tr><td class="l">MUX 4:1</td><td class="l">½×74LS153 + 1 inversor</td><td class="l">Usa un MUX más pequeño a cambio de un inversor</td></tr>
+    </table>
+  </div>
+
+  <div class="solved">
+    <div class="ttl">Circuito resuelto · Segmento <i>a</i> del decodificador BCD → 7 segmentos</div>
+    <div class="grid2">
+      <div>
+        <figure>
+        <svg viewBox="0 0 330 200" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="13">
+          <rect x="10" y="40" width="110" height="120" rx="8" fill="#e8f0fc" stroke="#1d2430" stroke-width="1.6"/>
+          <text x="65" y="95" text-anchor="middle" font-weight="700">74LS48</text><text x="65" y="113" text-anchor="middle" font-size="11">BCD → 7 seg</text>
+          <g font-size="12"><text x="14" y="30">A B C D</text></g>
+          <g stroke="#1d2430" stroke-width="1.3">
+            <line x1="120" y1="55" x2="180" y2="55"/><line x1="120" y1="72" x2="180" y2="72"/><line x1="120" y1="89" x2="180" y2="89"/>
+            <line x1="120" y1="106" x2="180" y2="106"/><line x1="120" y1="123" x2="180" y2="123"/><line x1="120" y1="140" x2="180" y2="140"/><line x1="120" y1="157" x2="180" y2="157"/>
+          </g>
+          <g font-size="11" fill="#5b6575"><text x="126" y="52">a</text><text x="126" y="69">b</text><text x="126" y="86">c</text><text x="126" y="103">d</text><text x="126" y="120">e</text><text x="126" y="137">f</text><text x="126" y="154">g</text></g>
+          <g fill="#c0392b" stroke="none">
+            <rect x="222" y="22" width="66" height="12" rx="6"/>
+            <rect x="290" y="36" width="12" height="62" rx="6"/><rect x="290" y="108" width="12" height="62" rx="6"/>
+            <rect x="222" y="172" width="66" height="12" rx="6"/><rect x="208" y="108" width="12" height="62" rx="6"/>
+            <rect x="208" y="36" width="12" height="62" rx="6"/><rect x="222" y="97" width="66" height="12" rx="6" fill="#ead9d7"/>
+          </g>
+          <g font-size="12" font-weight="700" fill="#1d2430"><text x="250" y="16">a</text><text x="308" y="70">b</text><text x="308" y="142">c</text><text x="250" y="198">d</text><text x="194" y="142">e</text><text x="194" y="70">f</text><text x="250" y="92">g</text></g>
+        </svg>
+        <figcaption>Dígito 0: segmentos a–f encendidos y g apagado</figcaption>
+        </figure>
+        <p>El segmento <b>a</b> se enciende en los dígitos 0, 2, 3, 5, 6, 7, 8 y 9, y se apaga en 1 y 4. Las combinaciones 10–15 no son BCD válidas y se tratan como X.</p>
+      </div>
+      <div>
+        <figure><img src="img/s5_kmap_seg_a.svg" alt="K-map segmento a"></figure>
+        <p style="font-size:14px">
+          <span style="color:#c0392b;font-weight:700">A</span> (columnas 11–10, usando X) ·
+          <span style="color:#1f5fbf;font-weight:700">C</span> (filas 11–10) ·
+          <span style="color:#2e8b57;font-weight:700">BD</span> (centro) ·
+          <span style="color:#8e44ad;font-weight:700"><span class="ov">B</span><span class="ov">D</span></span> (las 4 esquinas)
+        </p>
+      </div>
+    </div>
+    <p class="eq"><b>a = A + C + BD + <span class="ov">B</span><span class="ov">D</span></b> &nbsp;=&nbsp; A + C + <span class="ov">B ⊕ D</span></p>
+    <p>Sin las condiciones indiferentes harían falta más términos. Las X permiten que A aparezca sola. Los otros seis segmentos se diseñan de la misma forma; el 74LS48 ya los trae resueltos en un solo integrado.</p>
+  </div>
+</section>
+
+<!-- ============================================================ SEMANA 6 -->
+<section class="week" id="s6">
+  <span class="tag">Semana 6</span>
+  <h2>Consolidación de la unidad</h2>
+  <p class="lead">El repaso se centró en dos dificultades: pasar del requerimiento a la expresión mínima, y elegir entre compuertas y bloques funcionales.</p>
+
+  <h3 id="procedimiento">6.1 Procedimiento general de diseño combinacional</h3>
+  <ol class="steps">
+    <li><b>Especificar:</b> identificar entradas, salidas y su significado (qué representa cada 1). Revisar que el enunciado no tenga ambigüedades.</li>
+    <li><b>Tabular:</b> llenar la tabla de verdad con las 2<sup>n</sup> combinaciones y marcar con X las que no pueden ocurrir.</li>
+    <li><b>Expresar:</b> escribir Σm o ΠM. Usar SdP si hay pocos unos y PdS si hay pocos ceros.</li>
+    <li><b>Minimizar:</b> con un mapa de Karnaugh (hasta 4 variables) o con álgebra. Aprovechar las X.</li>
+    <li><b>Elegir la implementación:</b> AND-OR, solo NAND o solo NOR, o un bloque (MUX o decodificador). El criterio explícito es el costo: número de compuertas, número de CI y niveles de retardo.</li>
+    <li><b>Predecir y verificar:</b> antes de simular, anotar la salida esperada. Luego simular en Logisim todas las combinaciones y <b>explicar cualquier diferencia</b> en lugar de ocultarla.</li>
+  </ol>
+
+  <h3>6.2 ¿Compuertas o bloques funcionales?</h3>
+  <table>
+    <tr><th class="l">Situación</th><th class="l">Conviene</th></tr>
+    <tr><td class="l">La función se simplifica mucho (grupos grandes en el K-map)</td><td class="l">Compuertas (pocas y rápidas)</td></tr>
+    <tr><td class="l">La función no se simplifica (tablero de ajedrez, XOR)</td><td class="l">MUX, o compuertas XOR si se reconoce el patrón</td></tr>
+    <tr><td class="l">Varias salidas sobre las mismas entradas</td><td class="l">Decodificador + compuertas OR (comparte los minitérminos)</td></tr>
+    <tr><td class="l">Hay que cambiar la función a menudo</td><td class="l">MUX: solo se cambian los valores de las entradas de datos</td></tr>
+    <tr><td class="l">Se requiere una sola familia de compuertas</td><td class="l">Conversión a NAND-NAND o NOR-NOR</td></tr>
+  </table>
+
+  <h3 id="errores">6.3 Errores frecuentes detectados en la unidad</h3>
+  <table>
+    <tr><th class="l">Error</th><th class="l">Cómo evitarlo</th></tr>
+    <tr><td class="l">Ordenar el K-map en binario (00, 01, 10, 11) en vez de Gray</td><td class="l">Las etiquetas siempre van 00, 01, <b>11</b>, 10</td></tr>
+    <tr><td class="l">Formar grupos de 3 o de 6 celdas</td><td class="l">Solo potencias de 2: 1, 2, 4, 8</td></tr>
+    <tr><td class="l">Olvidar que los bordes y las esquinas son adyacentes</td><td class="l">Revisar siempre los bordes opuestos y las 4 esquinas</td></tr>
+    <tr><td class="l">Usar las X como obligatorias</td><td class="l">Una X se usa solo si agranda un grupo</td></tr>
+    <tr><td class="l">Negar al revés en los maxitérminos</td><td class="l">En M<sub>i</sub> se niega la variable que vale <b>1</b> en la fila</td></tr>
+    <tr><td class="l">Aplicar De Morgan sin cambiar el operador</td><td class="l">«Se rompe la barra y se cambia el signo»</td></tr>
+    <tr><td class="l">No descartar el acarreo final en una resta en C2</td><td class="l">En una resta en C2 el acarreo de salida se ignora</td></tr>
+    <tr><td class="l">Confundir los pines del 74LS02 con los del 74LS00</td><td class="l">Consultar siempre la hoja de datos: el 02 tiene la salida primero</td></tr>
+    <tr><td class="l">Dejar entradas sin conectar en la simulación (estado X/azul en Logisim)</td><td class="l">Toda entrada debe ir a una constante, un interruptor o una salida</td></tr>
+  </table>
+
+  <h3>6.4 Aporte al Proyecto Integrador de Saberes</h3>
+  <p>En el primer avance del proyecto, el Grupo 8 presentó la especificación funcional del sistema, su tabla de verdad, su expresión mínima y su esquema combinacional simulado. Nuestro sistema trabaja sobre una <b>ALU</b>. Los bloques de esta unidad (sumador/restador por C2, comparador y selección con MUX de la operación) forman el núcleo combinacional sobre el que se añadirá la parte secuencial en la Unidad 2 y la descripción en VHDL en la Unidad 3.</p>
+</section>
+
+<!-- ============================================================ EJERCICIOS -->
+<section class="week" id="ejercicios">
+  <span class="tag">Repaso</span>
+  <h2>Ejercicios de repaso con solución</h2>
+  <p class="lead">Ejercicios para preparar la evaluación sumativa. Cada solución está oculta: haz clic en el ejercicio para mostrarla.</p>
+
+  <details><summary>1. Convierte 213₁₀ a binario, octal y hexadecimal. <span class="pill">S1</span></summary>
+    <p>213 = 128 + 64 + 16 + 4 + 1 → <b>1101 0101₂</b> · octal: 011 010 101 → <b>325₈</b> · hex: 1101 0101 → <b>D5₁₆</b></p></details>
+  <details><summary>2. Representa −100 en complemento a dos con 8 bits. <span class="pill">S1</span></summary>
+    <p>+100 = 0110 0100 → invertido: 1001 1011 → +1 → <b>1001 1100</b></p></details>
+  <details><summary>3. Convierte 0110₂ a código Gray. <span class="pill">S1</span></summary>
+    <p>g₃ = 0, g₂ = 0⊕1 = 1, g₁ = 1⊕1 = 0, g₀ = 1⊕0 = 1 → <b>0101</b></p></details>
+  <details><summary>4. Expresa F = <span class="ov">A</span>B + AC en forma canónica SdP y PdS. <span class="pill">S2</span></summary>
+    <p><span class="ov">A</span>B cubre 010 y 011 (m2, m3). AC cubre 101 y 111 (m5, m7).</p>
+    <p><b>F = Σm(2, 3, 5, 7) = ΠM(0, 1, 4, 6)</b></p></details>
+  <details><summary>5. Simplifica <span class="ov">A + <span class="ov">B</span>C</span> con De Morgan. <span class="pill">S2</span></summary>
+    <p><span class="ov">A</span> · <span class="ov"><span class="ov">B</span>C</span> = <span class="ov">A</span>(B + <span class="ov">C</span>) = <b><span class="ov">A</span>B + <span class="ov">A</span><span class="ov">C</span></b></p></details>
+  <details><summary>6. Minimiza F(A,B,C,D) = Σm(0, 2, 5, 7, 8, 10, 13, 15). <span class="pill">S3</span></summary>
+    <p>Las 4 esquinas (0, 2, 8, 10) dan <span class="ov">B</span><span class="ov">D</span>. El bloque central (5, 7, 13, 15) da BD.</p>
+    <p><b>F = <span class="ov">B</span><span class="ov">D</span> + BD = <span class="ov">B ⊕ D</span></b> (A y C no influyen)</p></details>
+  <details><summary>7. Implementa F = A + B usando solo NOR. <span class="pill">S3</span></summary>
+    <p>A + B = <span class="ov"><span class="ov">A + B</span></span> = NOR( NOR(A, B), NOR(A, B) ) → 2 compuertas NOR</p></details>
+  <details><summary>8. Suma 1011 + 0110 con un sumador de 4 bits. ¿Hay acarreo de salida? <span class="pill">S4</span></summary>
+    <p>11 + 6 = 17 → <b>S = 0001 con C₄ = 1</b>. El resultado no cabe en 4 bits sin signo.</p></details>
+  <details><summary>9. Implementa F(A,B,C) = Σm(0, 1, 3, 6) con un MUX 4:1 (A y B en selección). <span class="pill">S5</span></summary>
+    <p>AB = 00: m0 = 1, m1 = 1 → I₀ = <b>1</b> · AB = 01: m2 = 0, m3 = 1 → I₁ = <b>C</b> · AB = 10: m4 = 0, m5 = 0 → I₂ = <b>0</b> · AB = 11: m6 = 1, m7 = 0 → I₃ = <b><span class="ov">C</span></b></p></details>
+  <details><summary>10. ¿Cuántos decodificadores 2:4 hacen falta para un 4:16? <span class="pill">S5</span></summary>
+    <p>5: un 2:4 para los dos bits altos, que habilita a uno de cuatro 2:4 conectados a los dos bits bajos.</p></details>
+</section>
+
+<!-- ============================================================ DUDAS -->
+<section class="week" id="dudas">
+  <span class="tag">Autorregulación</span>
+  <h2>Registro de dudas pendientes</h2>
+  <table>
+    <tr><th>#</th><th class="l">Duda</th><th class="l">Tema</th><th class="l">Qué haré para resolverla</th></tr>
+    <tr><td>1</td><td class="l">Si una combinación marcada como X llega a ocurrir en el hardware real (por ejemplo, BCD 1100), ¿qué muestra el display? ¿Puede causar problemas?</td><td class="l">S3 / S5</td><td class="l">Probar en Logisim las entradas 10–15 en el 74LS48 y consultar en tutoría</td></tr>
+    <tr><td>2</td><td class="l">¿Cómo funciona por dentro el acarreo anticipado del 74LS283 y cuánto más rápido es que el de cascada?</td><td class="l">S4</td><td class="l">Leer el apartado de circuitos aritméticos del texto base</td></tr>
+    <tr><td>3</td><td class="l">¿Pueden aparecer pulsos falsos (<i>glitches</i>) en la salida cuando cambian dos entradas casi al mismo tiempo en un circuito minimizado?</td><td class="l">S3</td><td class="l">Consultar al docente sobre riesgos estáticos</td></tr>
+    <tr><td>4</td><td class="l">¿Cuándo conviene usar PdS en lugar de SdP si ambas tienen un número de términos parecido?</td><td class="l">S2 / S3</td><td class="l">Resolver ambos casos de varios ejercicios y comparar el número de CI</td></tr>
+    <tr><td>5</td><td class="l">¿Qué valor de resistencia de <i>pull-up</i> se usa con el 74LS266 (colector abierto)?</td><td class="l">S1</td><td class="l">Revisar la hoja de datos del fabricante</td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ IA -->
+<section class="week" id="ia">
+  <span class="tag">Transparencia</span>
+  <h2>Declaración de uso de inteligencia artificial</h2>
+  <p>Conforme a la política de uso declarado de IA de la asignatura:</p>
+  <table>
+    <tr><th class="l">Herramienta</th><td class="l">Claude (Anthropic)</td></tr>
+    <tr><th class="l">Finalidad</th><td class="l">Apoyo para organizar y redactar el cuaderno, generar los esquemas y mapas de Karnaugh en SVG, y proponer ejercicios de repaso.</td></tr>
+    <tr><th class="l">Procedimiento de verificación</th><td class="l">Cada expresión simplificada se comprobó por fuerza bruta contra su tabla de verdad con el script <span class="mono">scripts/generar_figuras.py</span>, que se incluye en el repositorio. Los circuitos se contrastaron con las simulaciones de las prácticas APE 01–05 en Logisim-evolution.</td></tr>
+  </table>
+</section>
+
+<!-- ============================================================ REFERENCIAS -->
+<section class="week" id="referencias">
+  <span class="tag">Fuentes</span>
+  <h2>Referencias</h2>
+  <ol>
+    <li>J. D. Carpinelli, <i>An Animated Introduction to Digital Logic Design</i>. New Jersey Institute of Technology, 2023. ISBN 978-1-970194-00-5.</li>
+    <li>G. Bégin, <i>Circuits logiques combinatoires et séquentiels</i>, 2023.</li>
+    <li>L. D. Sinche Cueva, <i>Sílabo de la asignatura Diseño de Circuitos</i>, Carrera de Computación, Universidad Nacional de Loja, período septiembre 2026 – marzo 2027.</li>
+    <li>Guías de práctica APE N.º 01 a 05 y material de clase de la asignatura Diseño de Circuitos, UNL, 2026.</li>
+    <li>Hojas de datos de la familia 74LS (74LS00, 02, 04, 08, 32, 86, 266, 283, 85, 151, 153, 138, 148, 47/48).</li>
+  </ol>
+</section>
+
+<footer>Cuaderno de Síntesis · Unidad 1 · Diseño de Circuitos · UNL · Matías Joel Ortega Correa · 2026</footer>
+</main>
+</div>
+</body>
+</html>
