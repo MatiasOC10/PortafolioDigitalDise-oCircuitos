@@ -332,3 +332,30 @@ footer.pie{padding:1.2rem .5rem}
 }
 .declaracion-ia h2{margin-top:0!important}
 .declaracion-ia p{max-width:75ch}
+
+/* Semana 5: componentes heredados integrados al tema del cuaderno */
+.w5 .content nav.toc{
+  background:var(--panel2);border:1px solid var(--rule);border-radius:16px;
+  padding:1rem 1.25rem;margin:0 0 1.5rem;
+}
+.w5 .content nav.toc a{color:var(--acc-t);text-decoration:none}
+.w5 .content nav.toc a:hover{text-decoration:underline}
+.w5 .content section{
+  background:transparent;border:0;border-radius:0;padding:0;margin:0 0 2rem;
+  box-shadow:none;
+}
+.w5 .content section h2{margin-top:0}
+.w5 .content .note,.w5 .content .key{
+  border-radius:12px;padding:.8rem 1rem;margin:1rem 0;
+  background:var(--panel2);border-left:4px solid var(--acc);
+}
+.w5 .content .note{border-left-color:#f2ad43}
+.w5 .content details{
+  border:1px solid var(--rule);border-radius:12px;padding:.75rem 1rem;
+  margin:.8rem 0;background:var(--panel2);
+}
+.w5 .content summary{cursor:pointer;color:var(--acc-t);font-weight:700}
+.w5 .content .eq{display:block;overflow-x:auto;white-space:pre-wrap}
+.w5 .content .scroll{overflow-x:auto}
+.w5 .content pre.eq{white-space:pre;overflow-x:auto}
+.w5 .content table{width:auto;min-width:min(100%,520px)}
