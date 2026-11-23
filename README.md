@@ -41,10 +41,3 @@ pip install schemdraw pyparsing
 python scripts/generar_figuras.py
 # -> Todas las verificaciones pasaron.
 ```
-
-## Publicar con GitHub Pages
-
-1. Sube el contenido de esta carpeta a un repositorio nuevo.
-2. Ve a **Settings → Pages**.
-3. En *Source* elige **Deploy from a branch**, rama `main`, carpeta `/ (root)` y pulsa **Save**.
-4. Después de uno o dos minutos el cuaderno queda publicado en `https://<tu-usuario>.github.io/<nombre-del-repo>/`.
