@@ -6,7 +6,7 @@
 
 > Unidad 1 — *Análisis de lógica combinacional con diseño clásico* (semanas 1 a 6).
 
-🔗 **Ver el cuaderno:** `https://<tu-usuario>.github.io/<nombre-del-repo>/`
+🔗 **Ver el cuaderno:** `https://<tu-usuario>.github.io/<nombre-del-repo>/](https://matiasoc10.github.io/PortafolioDigitalDise-oCircuitos/`
 
 ## Contenido
 
