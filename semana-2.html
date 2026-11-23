@@ -15,7 +15,7 @@
 <aside class="side">
 <a class="brand" href="index.html">Cuaderno de Diseño de Circuitos</a>
 <p class="who">Matias Joel Ortega Correa<br>Computación · UNL</p>
-<nav aria-label="Semanas"><a href="index.html">Inicio<small>Portada e índice</small></a><a href="semana-1.html">Semana 1<small>Números, códigos y compuertas</small></a><a href="semana-2.html" aria-current="page">Semana 2<small>Álgebra de Boole y formas canónicas</small></a><a href="semana-3.html">Semana 3<small>Karnaugh, indiferentes y NAND/NOR</small></a><a href="semana-4.html">Semana 4<small>Circuitos aritméticos</small></a></nav>
+<nav aria-label="Semanas"><a href="index.html">Inicio<small>Portada e índice</small></a><a href="semana-1.html">Semana 1<small>Números, códigos y compuertas</small></a><a href="semana-2.html" aria-current="page">Semana 2<small>Álgebra de Boole y formas canónicas</small></a><a href="semana-3.html">Semana 3<small>Karnaugh, indiferentes y NAND/NOR</small></a><a href="semana-4.html">Semana 4<small>Circuitos aritméticos</small></a><a href="index.html#declaracion-ia">Declaración de IA<small>Créditos y transparencia</small></a></nav>
 </aside>
 <div class="main">
 <main class="sheet">
@@ -113,7 +113,7 @@
 <li>Consenso: <code class="e">XY + X'Z + YZ = XY + X'Z</code>.</li>
 </ol>
 <p>No hay un algoritmo que garantice el mínimo, y por eso la Semana 3 llegan los mapas de Karnaugh. Dos expresiones son equivalentes si y solo si tienen la misma tabla de verdad, así que siempre compruebo con una fila.</p>
-<div class="ej"><p class="src">Ejemplo de la clase del miércoles</p><h3>Simplificar F = A + A'B + AB'C</h3>
+<div class="ej"><p class="src">Ejemplo de simplificación</p><h3>Simplificar F = A + A'B + AB'C</h3>
 <div class="wide"><table><tr><th class="l">Expresión</th><th class="l">Justificación</th></tr>
 <tr><td class="l"><code class="e">F = A + A'B + AB'C</code></td><td class="l">expresión original</td></tr>
 <tr><td class="l"><code class="e">= (A + B) + AB'C</code></td><td class="l">absorción del complemento: A + A'B = A + B</td></tr>
@@ -146,7 +146,7 @@
 <tr><td class="l">SOP canónica</td><td class="l">2 NOT + 3 AND de 3 entradas + OR de 3 entradas (2 OR de 2) = 7</td><td class="l">7404 + 7411 + 7432 = 3 CI</td></tr>
 <tr><td class="l">SOP simplificada <code class="e">EC' + EP</code></td><td class="l">1 NOT + 2 AND + 1 OR = 4</td><td class="l">7404 + 7408 + 7432 = 3 CI</td></tr>
 <tr><td class="l">Factorizada <code class="e">E(C' + P)</code></td><td class="l">1 NOT + 1 OR + 1 AND = 3</td><td class="l">7404 + 7432 + 7408 = 3 CI</td></tr></table></div>
-<p>En este problema el ahorro está en el número de compuertas (de 7 a 3) y en los literales (de 9 a 3); la cantidad de chips se queda en 3 porque cada tipo de compuerta pide su propio integrado.</p></div><div class="ej"><p class="src">Individual, al cierre del lunes</p><h3>Ticket de salida</h3>
+<p>En este problema el ahorro está en el número de compuertas (de 7 a 3) y en los literales (de 9 a 3); la cantidad de chips se queda en 3 porque cada tipo de compuerta pide su propio integrado.</p></div><div class="ej"><p class="src">Individual, al cierre del lunes</p><h3>Ejercicio de cierre</h3>
 <p><strong>1.</strong> Aplicar De Morgan a <code class="e">(A' + BC)'</code>. Primero la barra sobre la suma: <code class="e">(A')' · (BC)' = A·(BC)'</code>. Luego la del producto: <code class="e">(BC)' = B' + C'</code>. Queda <code class="e">A(B' + C')</code>, y distribuyendo, <code>AB' + AC'</code>. Compruebo con A = 1, B = 0, C = 0: el original da (0 + 0)' = 1 y el resultado da 1 + 1 = 1.</p>
 <p><strong>2.</strong> m4 corresponde a la fila 100, así que A = 1 y B = C = 0: <code>m4 = AB'C'</code>. M4 es la suma con la variable en 0 sin complemento y la que está en 1 complementada: <code>M4 = A' + B + C</code>. Se cumple M4 = (m4)'.</p></div>
 <h2>Resumen de la semana</h2>
@@ -156,7 +156,7 @@
 <li><strong>Canónica:</strong> siempre se puede (Σm con las filas en 1, ΠM con las filas en 0) y es única.</li>
 <li><strong>Simplificar es elegir por costo:</strong> menos compuertas, CI y niveles. El álgebra no garantiza el mínimo.</li>
 </ul>
-<p>Tarea: lectura de Garza (2025) sobre álgebra de Boole, De Morgan y formas canónicas; complemento en inglés de Carpinelli (2023); Cuestionario N.º 02 en el EVA.</p>
+<p></p>
 <div class="pager"><a href="semana-1.html">← Semana 1</a><a href="semana-3.html">Semana 3 →</a></div></div>
 </main>
 <footer class="pie">Matias Joel Ortega Correa · Universidad Nacional de Loja · Carrera de Computación · 2.º ciclo A · Docente: Ing. Luis Darío Sinche Cueva, Mg.</footer>
